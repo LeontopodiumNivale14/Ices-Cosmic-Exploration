@@ -484,7 +484,16 @@ namespace ICE.Scheduler.Tasks
             if (EzThrottler.Throttle("GrabMission", 250))
             {
                 IceLogging.Debug($"[Grabbing Mission] Mission Name: {SchedulerMain.MissionName} | MissionId {MissionId}");
-                if (SchedulerMain.Abandon == false && CosmicHelper.MissionInfoDict[MissionId].Attributes.HasFlag(MissionAttributes.Gather) && C.Missions.SingleOrDefault(x => x.Id == MissionId).GatherSetting.MinimumGP > PlayerHelper.GetGp())
+                CosmicHelper.MissionListInfo mission = CosmicHelper.MissionInfoDict[MissionId];
+                float distance = mission.MarkerId != 0 ? Vector2.Distance(new Vector2(Player.Position.X, Player.Position.Z), new Vector2(mission.X, mission.Y)) : 0;
+                if (SchedulerMain.Abandon == false && mission.Attributes.HasFlag(MissionAttributes.Gather) && !mission.Attributes.HasFlag(MissionAttributes.Critical) && distance > mission.Radius)
+                {
+                    SchedulerMain.State |= IceState.Waiting;
+                    IceLogging.Debug($"[ICE] Distance to marker: {distance} | Radius: {mission.Radius}", true);
+                    P.Navmesh.PathfindAndMoveTo(GatheringUtil.MoonNodeInfoList.Where(x => x.NodeSet == mission.NodeSet).OrderBy(x => PlayerHelper.GetDistanceToPlayer(x.Position)).First().LandZone, false);
+                    return true;
+                }
+                else if (SchedulerMain.Abandon == false && mission.Attributes.HasFlag(MissionAttributes.Gather) && C.Missions.SingleOrDefault(x => x.Id == MissionId).GatherSetting.MinimumGP > PlayerHelper.GetGp())
                 {
                     SchedulerMain.State |= IceState.Waiting;
                     return true;
@@ -571,6 +580,9 @@ namespace ICE.Scheduler.Tasks
         public static void WaitForNonStandard()
         {
             if (!PlayerHelper.IsInCosmicZone())
+                return;
+
+            if (P.Navmesh.IsRunning())
                 return;
 
             if (CosmicHelper.MissionInfoDict[MissionId].Attributes.HasFlag(MissionAttributes.Gather) && C.Missions.SingleOrDefault(x => x.Id == MissionId).GatherSetting.MinimumGP > PlayerHelper.GetGp())
