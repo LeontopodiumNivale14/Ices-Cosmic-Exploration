@@ -1,11 +1,8 @@
 using System.Globalization;
 using Dalamud.Game.Text;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
-using ICE.Utilities.Cosmic;
 using Lumina.Excel.Sheets;
 
 namespace ICE.Ui
@@ -147,10 +144,7 @@ namespace ICE.Ui
 
                     if (classId is >= 8 and <= 18)
                     {
-                        var wksManagerEx = (WKSManagerEx*)wksManager;
-                        var scores =
-                            MemoryMarshal.CreateSpan(
-                                ref Unsafe.As<FixedSizeArray11<int>, int>(ref wksManagerEx->_scores), 11);
+                        var scores = wksManager->Scores;
 
                         int classScore = scores[(int)classId - 8];
                         var cappedClassScore = Math.Min(500_000, classScore);
