@@ -22,36 +22,70 @@ public static class AddonHelper
 
     public static unsafe string GetNodeText(string addonName, params int[] nodeNumbers)
     {
-
-        var ptr = Svc.GameGui.GetAddonByName(addonName, 1);
-
-        var addon = (AtkUnitBase*)ptr.Address;
-        var uld = addon->UldManager;
-
-        AtkResNode* node = null;
-        var debugString = string.Empty;
-        for (var i = 0; i < nodeNumbers.Length; i++)
+        try
         {
-            var nodeNumber = nodeNumbers[i];
+            var ptr = Svc.GameGui.GetAddonByName(addonName, 1);
+            if (ptr.Address == IntPtr.Zero)
+                return String.Empty;
 
-            var count = uld.NodeListCount;
+            var addon = (AtkUnitBase*)ptr.Address;
+            if (addon->UldManager.NodeList == null || addon->UldManager.NodeListCount == 0)
+                return String.Empty;
 
-            node = uld.NodeList[nodeNumber];
-            debugString += $"[{nodeNumber}]";
+            var uld = addon->UldManager;
+            AtkResNode* currentNode = null;
 
-            // More nodes to traverse
-            if (i < nodeNumbers.Length - 1)
+            for (var i = 0; i < nodeNumbers.Length; i++)
             {
-                uld = ((AtkComponentNode*)node)->Component->UldManager;
+                int nodeIndex = nodeNumbers[i];
+
+                if (nodeIndex < 0 || nodeIndex >= uld.NodeListCount)
+                    return $"IndexOutOfRange: {nodeIndex}";
+
+                currentNode = uld.NodeList[nodeIndex];
+
+                // More nodes to traverse
+                if (i < nodeNumbers.Length - 1)
+                {
+                    if (currentNode->Type != NodeType.Component || ((AtkComponentNode*)currentNode)->Component == null)
+                        return $"InvalidComponentNode: {currentNode->Type}";
+
+                    var component = ((AtkComponentNode*)currentNode)->Component;
+                    if (component->UldManager.NodeList == null ||
+                        component->UldManager.NodeListCount == 0)
+                        return "EmptyChildUld";
+
+                    uld = component->UldManager;
+                }
             }
+
+            if (currentNode == null)
+                return String.Empty;
+
+            return currentNode->Type switch
+            {
+                NodeType.Counter => GetCounterNodeText((AtkCounterNode*)currentNode),
+                NodeType.Text => GetTextNodeText((AtkTextNode*)currentNode),
+                _ => $"UnsupportedNodeType: {currentNode->Type}"
+            };
         }
-
-        if (node->Type == NodeType.Counter)
-            return ((AtkCounterNode*)node)->NodeText.ToString();
-
-        var textNode = (AtkTextNode*)node;
-        return textNode->NodeText.GetText();
+        catch (Exception ex) when (ex is AccessViolationException or NullReferenceException)
+        {
+            PluginLog.Error($"Memory access violation in GetNodeText: {ex.Message}");
+            return string.Empty;
+        }
     }
+
+    private static unsafe string GetCounterNodeText(AtkCounterNode* node)
+    {
+        return node != null ? node->NodeText.ToString() : string.Empty;
+    }
+
+    private static unsafe string GetTextNodeText(AtkTextNode* node)
+    {
+        return node != null ? node->NodeText.GetText() : string.Empty;
+    }
+    
     public static unsafe AtkTextNode* GetAtkTextNode(string addonName, params int[] nodeNumbers)
     {
 
