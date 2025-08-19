@@ -53,6 +53,7 @@ namespace ICE.Ui
                 ImGui.Text($"Timed Mission(s): {string.Join(", ", currentTimedBonus.Value)} -> {string.Join(", ", nextTimedBonus.Value)} [{nextTimedBonus.Key.start:D2}:00]");
             }
 
+            /* Temporarily Disabling this until I can figure out wtf is causing it to crash on non-english clients *-sighs-*
             (string type, var locations) = AnnouncementHandlers.CheckForRedAlert();
             if (type != null && locations != null)
             {
@@ -85,6 +86,8 @@ namespace ICE.Ui
 
             ImGuiHelpers.ScaledDummy(2);
             ImGui.Separator();
+
+            */
             ImGuiHelpers.ScaledDummy(2);
 
             DrawScore();
