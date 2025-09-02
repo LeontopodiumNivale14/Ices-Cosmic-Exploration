@@ -1292,6 +1292,7 @@ namespace ICE.Ui
                     bool collectableMission = missionDict.Attributes.HasFlag(MissionAttributes.Collectables);
                     bool stellerReductionMission = missionDict.Attributes.HasFlag(MissionAttributes.ReducedItems);
                     bool TimedMission = missionDict.Attributes.HasFlag(MissionAttributes.ScoreTimeRemaining);
+                    bool CriticalMission = missionDict.Attributes.HasFlag(MissionAttributes.Critical); // is CriticalMission
 
                     bool dualclass = craftMission && (gatherMission || fishMission);
 
@@ -1303,7 +1304,15 @@ namespace ICE.Ui
                     // "Current Class", "All Missions", "Currently Enabled"
                     void UpdateMissions()
                     {
-                        if (TimedMission)
+                        if (CriticalMission)
+                        {
+                            // Exclude TurnInGold/TurnInSilver for CriticalMission
+                            mission.TurnInGold = false;
+                            mission.TurnInSilver = false;
+                            mission.TurnInASAP = selectedModes[2];
+                            mission.ManualMode = selectedModes[3];
+                        }
+                        else if (TimedMission)
                         {
                             if (!selectedModes[2] && !selectedModes[3])
                             {
