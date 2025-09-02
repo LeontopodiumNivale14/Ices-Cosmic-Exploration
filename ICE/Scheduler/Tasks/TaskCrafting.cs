@@ -31,8 +31,12 @@ namespace ICE.Scheduler.Tasks
 
             if (currentScore == 0 && silverScore == 0 && goldScore == 0)
             {
-                IceLogging.Debug("Failed to get scores, aborting");
-                return;
+                (currentScore, bronzeScore, silverScore, goldScore) = MissionHandler.GetCurrentScores();
+                if (currentScore == 0 && silverScore == 0 && goldScore == 0)
+                {
+                    IceLogging.Debug("Failed to get scores, aborting");
+                    return;
+                }
             }
 
             if (MissionHandler.IsMissionTimedOut())

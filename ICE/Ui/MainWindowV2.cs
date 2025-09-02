@@ -128,7 +128,8 @@ namespace ICE.Ui
             (6, "Research II", missions => missions.OrderByDescending(x => x.Value.ExperienceRewards.Where(exp => CosmicHelper.ExpDictionary[exp.Type] == "II").FirstOrDefault().Amount)),
             (7, "Research III", missions => missions.OrderByDescending(x => x.Value.ExperienceRewards.Where(exp => CosmicHelper.ExpDictionary[exp.Type] == "III").FirstOrDefault().Amount)),
             (8, "Research IV", missions => missions.OrderByDescending(x => x.Value.ExperienceRewards.Where(exp => CosmicHelper.ExpDictionary[exp.Type] == "IV").FirstOrDefault().Amount)),
-            (9, "Map Marker", missions => missions.OrderByDescending(x => x.Value.MarkerId)),
+            (9, "Research V", missions => missions.OrderByDescending(x => x.Value.ExperienceRewards.Where(exp => CosmicHelper.ExpDictionary[exp.Type] == "V").FirstOrDefault().Amount)),
+            (10, "Map Marker", missions => missions.OrderByDescending(x => x.Value.MarkerId)),
         };
 
         // Right Column stuff
@@ -637,6 +638,8 @@ namespace ICE.Ui
                                     type = "III";
                                 else if (row.Type == 4)
                                     type = "IV";
+                                else if (row.Type == 5)
+                                    type = "V";
                                 ImGui.Text($"Lv {type}:");
 
                                 ImGui.TableSetColumnIndex(1);
@@ -868,7 +871,7 @@ namespace ICE.Ui
             if (showCredits)
                 columnAmount += 2;
             if (showExp)
-                columnAmount += 4;
+                columnAmount += 5;
             if (showGatherConfig)
                 columnAmount += 1;
             if (showNotes)
@@ -907,7 +910,7 @@ namespace ICE.Ui
                 Utils.IDLength = col2Width;
                 Utils.cosmicLength = col4Width;
                 Utils.lunarLength = col5Width;
-                Utils.XPLength = colXPWidth * 4f;
+                Utils.XPLength = colXPWidth * 5f;
 
                 ImGui.TableSetupColumn("###EnableCheckbox", ImGuiTableColumnFlags.WidthFixed, col1Width);
                 ImGui.TableSetupColumn("###MissionIDs", ImGuiTableColumnFlags.WidthFixed, col2Width);
@@ -920,7 +923,7 @@ namespace ICE.Ui
                 IOrderedEnumerable<KeyValuePair<int, string>> orderedExp = ExpDictionary.ToList().OrderBy(exp => exp.Key);
                 if (showExp)
                 {
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < 5; i++)
                     {
                         ImGui.TableSetupColumn($"###XPColumn{i}", ImGuiTableColumnFlags.WidthFixed, colXPWidth);
                     }
@@ -971,6 +974,9 @@ namespace ICE.Ui
                     
                     ImGui.TableNextColumn();
                     CenterText("IV");
+
+                    ImGui.TableNextColumn();
+                    CenterText("V");
                 }
 
                 // Actual table entries now
@@ -1387,7 +1393,7 @@ namespace ICE.Ui
 
             Dictionary<uint, XPType> XPTable = new Dictionary<uint, XPType>();
 
-            for (byte type = 1; type <= 4; type++)
+            for (byte type = 1; type <= 5; type++)
             {
                 if (!wksManager->ResearchModule->IsTypeAvailable(toolClassId, type))
                     break;
@@ -1430,6 +1436,8 @@ namespace ICE.Ui
                         xpType = "III";
                     else if (type.Key == 4)
                         xpType = "IV";
+                    else if (type.Key == 5)
+                        xpType = "V";
                     else
                         xpType = "???";
 

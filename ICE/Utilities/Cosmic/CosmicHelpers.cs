@@ -18,7 +18,8 @@ public static partial class CosmicHelper
         { 1, "I" },
         { 2, "II" },
         { 3, "III" },
-        { 4, "IV" }
+        { 4, "IV" },
+        { 5, "V" }
     };
 
 

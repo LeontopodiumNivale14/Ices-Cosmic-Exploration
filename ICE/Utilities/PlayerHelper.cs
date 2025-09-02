@@ -33,8 +33,9 @@ public class PlayerHelper
         return playerState->ClassJobLevels[ExcelHelper.ClassJobSheet.GetRowOrDefault((uint)(job ?? (Player.Available ? Player.Object.GetJob() : 0)))?.ExpArrayIndex ?? 0];
     }
 
-    public static bool IsInCosmicZone() => IsInSinusArdorum();
+    public static bool IsInCosmicZone() => IsInSinusArdorum() || IsInPhaenna();
     public static bool IsInSinusArdorum() => IsInZone(1237);
+    public static bool IsInPhaenna() => IsInZone(1291);
     public static bool IsInZone(uint zoneID) => Svc.ClientState.TerritoryType == zoneID;
     public static unsafe uint CurrentTerritory() => GameMain.Instance()->CurrentTerritoryTypeId;
 
