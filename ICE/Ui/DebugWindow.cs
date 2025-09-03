@@ -37,7 +37,8 @@ internal class DebugWindow : Window
                                    "Moon Mission Info", "Crafting Table", "Gathering Table", 
                                    "Test Buttons", "IPC Testing", 
                                    "Map Test", "Gather Editor",
-                                   "Navmesh Testing", "Relic Info"];
+                                   "Navmesh Testing", "Relic Info",
+                                   "Route Editor"];
 
     int selectedDebugIndex = 0; // This should be stored somewhere persistent
 
@@ -84,6 +85,7 @@ internal class DebugWindow : Window
                 case 12: GatheringViewer.Draw(); break;
                 case 13: Navmesh_Testing.Draw(); break;
                 case 14: RelicInfo.Draw(); break;
+                case 15: RouteEditor.Draw(); break;
                 default: ImGui.Text("Unknown Debug View"); break;
             }
 

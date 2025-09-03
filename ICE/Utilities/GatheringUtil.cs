@@ -174,6 +174,14 @@ public static unsafe class GatheringUtil
         // { new Vector2(566, -908), 24 },
         { new Vector2(188, -201), 25 },
         { new Vector2(748, 101), 26 },
+
+        // New Area -- Just Placeholders for now
+        // { new Vector2(416, -737), 27 },
+        // { new Vector2(414, -755), 28 },
+        // { new Vector2(538, -83), 29 },
+        // { new Vector2(-706, -464), 30}
+        // { new Vector2(157, -37), 31}
+        // { new Vector2(324, -41), 32} 
     };
 
     public class GathNodeInfo

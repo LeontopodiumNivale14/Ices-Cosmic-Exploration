@@ -620,7 +620,7 @@ namespace ICE.Scheduler.Tasks
 
             if (!MissionHud.UseXPDebugger)
             {
-                for (byte type = 1; type <= 4; type++)
+                for (byte type = 1; type <= 5; type++)
                 {
                     if (!wksManager->ResearchModule->IsTypeAvailable(toolClassId, type))
                         break;
@@ -740,22 +740,32 @@ namespace ICE.Scheduler.Tasks
                 int i = (int)kvp.Key;
                 var reward = kvp.Value;
                 float score = 0f;
-                IceLogging.Debug($"Currently checking mission: {i}");
+                IceLogging.Info($"Currently checking mission: {i}");
 
                 foreach (var rewardEntry in reward)
                 {
                     IceLogging.Debug($"Checking for value: {rewardEntry.Key}");
                     if (urgencies.TryGetValue(rewardEntry.Key, out var urgency))
                     {
-                        IceLogging.Debug($"Checking urgency for: {rewardEntry.Key}");
-                        score += urgency * rewardEntry.Value;
-                        IceLogging.Debug($"Adding score: {urgency * rewardEntry.Value}");
+                        IceLogging.Info($"Checking urgency for: {rewardEntry.Key}");
+                        float contribution = urgency * rewardEntry.Value;
+
+                        // Only add positive contributions (high urgency rewards)
+                        if (contribution > 0)
+                        {
+                            score += contribution;
+                            IceLogging.Info($"Adding positive score: {contribution}");
+                        }
+                        else
+                        {
+                            IceLogging.Debug($"Skipping negative score: {contribution}");
+                        }
                     }
                 }
 
                 if (score > bestScore)
                 {
-                    IceLogging.Debug($"New Best Score: {bestScore}");
+                    IceLogging.Debug($"New Best Score: {score} (was {bestScore})", "[Relic XP Finder]");
                     IceLogging.Debug($"Mission Number: {i}");
                     bestScore = score;
                     bestIndex = i;

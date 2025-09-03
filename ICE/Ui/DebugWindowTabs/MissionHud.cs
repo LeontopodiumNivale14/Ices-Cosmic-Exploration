@@ -23,6 +23,7 @@ namespace ICE.Ui.DebugWindowTabs
             { 2, new DummyXP { CurrentXP = 0, NeededXP = 0} },
             { 3, new DummyXP { CurrentXP = 0, NeededXP = 0} },
             { 4, new DummyXP { CurrentXP = 0, NeededXP = 0} },
+            { 5, new DummyXP { CurrentXP = 0, NeededXP = 0} },
         };
 
         public static bool UseXPDebugger = false;
