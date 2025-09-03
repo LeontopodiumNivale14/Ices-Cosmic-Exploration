@@ -70,8 +70,8 @@ public sealed partial class ICE
 
             MissionAttributes attributes = missionText switch
             {
-                99 or 101 or 145 => Craft | Limited,
-                100 or 102 or 146 or 147 or 148 => Craft | Limited | Collectables,
+                99 or 101 or 145 or 236 or 238 => Craft | Limited,
+                100 or 102 or 146 or 147 or 148 or 235 or 237 => Craft | Limited | Collectables,
                 103 => Gather | Limited,
                 104 => Gather | ScoreTimeRemaining,
                 105 => Gather,
@@ -219,6 +219,35 @@ public sealed partial class ICE
                     }
                     var item3RecipeId = item3RecipeRow.RowId;
                     MainItems.Add(((ushort)item3RecipeId), item3Amount);
+                }
+
+                if (MainItems.Count == 0)
+                {
+                    // Has to be one of the new moon missions... becuase square hates me I swear lol
+                    var wksRecipeSheet = MoonRecipeSheet.GetRow(RecipeId);
+                    var recipeId = wksRecipeSheet.Recipe[0].RowId;
+                    var recipeName = ItemSheet.GetRow(recipeId).Name.ToString();
+                    var recipeRow = RecipeSheet.GetRow(recipeId);
+                    var recipeAmount = 1;
+
+                    for (var i = 0; i < 4; i++)
+                    {
+                        var subItem = recipeRow.Ingredient[i].Value.RowId;
+                        if (subItem != 0)
+                        {
+                            IceLogging.Verbose($"subItem: {subItem} slot [{i}]");
+                            var subitemRecipe = RecipeSheet.FirstOrDefault(x => x.ItemResult.RowId == subItem);
+                            if (subitemRecipe.RowId != 0)
+                            {
+                                var subItemAmount = recipeRow.AmountIngredient[i].ToInt();
+                                subItemAmount = subItemAmount * recipeAmount;
+                                PreCrafts.Add(((ushort)subitemRecipe.RowId), subItemAmount);
+                                preCraftsbool = true;
+                            }
+                        }
+                    }
+
+                    MainItems.Add((ushort)recipeId, recipeAmount);
                 }
 
                 if (preCraftsbool)

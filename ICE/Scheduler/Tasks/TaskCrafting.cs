@@ -223,6 +223,10 @@ namespace ICE.Scheduler.Tasks
 
                 P.TaskManager.EnqueueStack();
             }
+            else
+            {
+                IceLogging.Debug("Artisan is busy atm. Waiting for it to finish", "[Crafting Task]");
+            }
         }
 
         private static void EnqueueCraft(KeyValuePair<ushort, Tuple<int, int>> craft)
