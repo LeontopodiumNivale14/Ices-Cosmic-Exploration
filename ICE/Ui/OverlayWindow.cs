@@ -1,13 +1,17 @@
+using System.Collections.Generic;
 using System.Globalization;
 using Dalamud.Game.Text;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
+using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using Lumina.Excel.Sheets;
 
 namespace ICE.Ui
 {
     internal class OverlayWindow : Window
     {
+        private uint selectedJob = C.SelectedJob;
+        private bool ShowXP = C.ShowXP;
         public OverlayWindow() : base("ICE Overlay", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.AlwaysAutoResize)
         {
             P.windowSystem.AddWindow(this);
@@ -18,7 +22,7 @@ namespace ICE.Ui
             P.windowSystem.RemoveWindow(this);
         }
 
-        
+
 
         public override void Draw()
         {
@@ -126,6 +130,15 @@ namespace ICE.Ui
             //    //    Type = Dalamud.Game.Text.XivChatType.Debug,
             //    //});
             //}
+
+            ImGuiHelpers.ScaledDummy(2);
+            ImGui.Separator();
+            ImGuiHelpers.ScaledDummy(2);
+
+            using (ImRaii.Disabled(!ShowXP))
+            {
+                RelicXP.DrawRelicXP(selectedJob);
+            }
         }
 
         void DrawScore()
