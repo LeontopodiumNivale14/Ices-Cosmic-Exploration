@@ -1376,6 +1376,7 @@ namespace ICE.Ui
 
 
 
+
         #region Table Tools
 
         private void CenterText(string text)
