@@ -37,7 +37,7 @@ namespace ICE.Ui
 
             Dictionary<uint, XPType> XPTable = new Dictionary<uint, XPType>();
 
-            for (byte type = 1; type <= 5; type++)
+            for (byte type = 1; type < 6; type++)
             {
                 if (!wksManager->ResearchModule->IsTypeAvailable(toolClassId, type))
                     break;
@@ -60,7 +60,7 @@ namespace ICE.Ui
 
             ImGui.Text($"Stage: {stage}");
 
-            if (stage != 9 && stage != 14)
+            if (stage != 14)
             {
                 foreach (var type in XPTable)
                 {
@@ -99,7 +99,7 @@ namespace ICE.Ui
             }
         }
 
-        static void DrawXPBar(string label, uint currentXP, uint neededXP, Vector2 size, uint maxXP = 0)
+        private static void DrawXPBar(string label, uint currentXP, uint neededXP, Vector2 size, uint maxXP = 0)
         {
             // Handle capped and invalid data
             float fraction;

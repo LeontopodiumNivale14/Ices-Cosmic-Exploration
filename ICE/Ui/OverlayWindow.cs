@@ -137,7 +137,12 @@ namespace ICE.Ui
 
             using (ImRaii.Disabled(!ShowXP))
             {
-                RelicXP.DrawRelicXP(selectedJob);
+                var currentJobId = (int)PlayerHelper.GetClassJobId().Value;
+
+                if (CosmicHelper.CrafterJobList.Contains((int)currentJobId) || CosmicHelper.GatheringJobList.Contains(currentJobId))
+                {
+                    RelicXP.DrawRelicXP((uint)currentJobId);
+                }
             }
         }
 
