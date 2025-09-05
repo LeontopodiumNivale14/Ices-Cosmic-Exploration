@@ -56,6 +56,7 @@ namespace ICE
         // Overlay settings
         public bool ShowOverlay { get; set; } = false;
         public bool ShowSeconds { get; set; } = false;
+        public bool ShowXP { get; set; } = false;
 
         // Table settings
         public bool HideUnsupportedMissions { get; set; } = false;
