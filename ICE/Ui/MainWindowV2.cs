@@ -1497,14 +1497,29 @@ namespace ICE.Ui
             if (filledWidth > 0f)
             {
                 var filledEnd = new Vector2(pos.X + filledWidth, pos.Y + size.Y);
+                var left = new Vector4(0.2f, 0.6f, 1f, 1f); // Blue #3399ff
+                var right = new Vector4(0.6f, 1f, 0.8f, 1f); // Green #99ffcc
+                if (currentXP > neededXP)
+                {
+                    if (currentXP >= maxXP)
+                    {
+                        left = new Vector4(1f, 0.84f, 0f, 1f); // Gold #ffd600
+                        right = new Vector4(1f, 0.84f, 0f, 1f); // Gold #ffd600
+                    }
+                    else
+                    {
+                        left = new Vector4(0.6f, 1f, 0.8f, 1f); // Green #99ffcc
+                        right = new Vector4(0.2f, 0.6f, 1f, 1f); // Blue #3399ff
+                    }
+                }
 
                 drawList.AddRectFilledMultiColor(
                     barStart,
                     filledEnd,
-                    ImGui.GetColorU32(new Vector4(0.2f, 0.6f, 1f, 1f)), // left
-                    ImGui.GetColorU32(new Vector4(0.6f, 1f, 0.8f, 1f)), // right
-                    ImGui.GetColorU32(new Vector4(0.6f, 1f, 0.8f, 1f)), // right
-                    ImGui.GetColorU32(new Vector4(0.2f, 0.6f, 1f, 1f))  // left
+                    ImGui.GetColorU32(left), // top-left
+                    ImGui.GetColorU32(right), // top-right
+                    ImGui.GetColorU32(right), // bottom-right
+                    ImGui.GetColorU32(left)  // bottom-left
                 );
             }
 
