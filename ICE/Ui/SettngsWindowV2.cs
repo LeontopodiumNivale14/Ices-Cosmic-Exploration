@@ -843,7 +843,7 @@ internal class SettingsWindowV2 : Window
 
     private bool showOverlay = C.ShowOverlay;
     private bool ShowSeconds = C.ShowSeconds;
-    private bool ShowXP = C.ShowXP;
+    private bool ShowXP = C.ShowExpBars;
 
     private void Overlay()
     {
@@ -861,7 +861,7 @@ internal class SettingsWindowV2 : Window
 
         if (ImGui.Checkbox("Show XP", ref ShowXP))
         {
-            C.ShowXP = ShowXP;
+            C.ShowExpBars = ShowXP;
             C.Save();
         }
     }

@@ -10,7 +10,8 @@ namespace ICE.Ui
 {
     internal class RelicXP
     {
-        private float current = 25f;
+        private static float current = 25f;
+        private static bool ShowXP = C.ShowExpBars;
 
         private class XPType
         {

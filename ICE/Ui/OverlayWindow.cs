@@ -11,7 +11,6 @@ namespace ICE.Ui
     internal class OverlayWindow : Window
     {
         private uint selectedJob = C.SelectedJob;
-        private bool ShowXP = C.ShowXP;
         public OverlayWindow() : base("ICE Overlay", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.AlwaysAutoResize)
         {
             P.windowSystem.AddWindow(this);
@@ -135,11 +134,13 @@ namespace ICE.Ui
             ImGui.Separator();
             ImGuiHelpers.ScaledDummy(2);
 
-            using (ImRaii.Disabled(!ShowXP))
+            if (C.ShowExpBars)
             {
                 var currentJobId = (int)PlayerHelper.GetClassJobId().Value;
 
-                if (CosmicHelper.CrafterJobList.Contains((int)currentJobId) || CosmicHelper.GatheringJobList.Contains(currentJobId))
+                bool showExp = (CosmicHelper.CrafterJobList.Contains(currentJobId) || CosmicHelper.GatheringJobList.Contains(currentJobId));
+
+                if (CosmicHelper.CrafterJobList.Contains(currentJobId) || CosmicHelper.GatheringJobList.Contains(currentJobId))
                 {
                     RelicXP.DrawRelicXP((uint)currentJobId);
                 }
