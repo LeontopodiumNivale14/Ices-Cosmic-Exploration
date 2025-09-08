@@ -1217,10 +1217,10 @@ namespace ICE.Ui
                             hasPreviousNotes = true;
                             notes = entry.Value.Weather.ToString();
                         }
-                        else if (entry.Value.StartTime != 0)
+                        else if (entry.Value.StartTime != 0 || entry.Value.EndTime != 0)
                         {
                             hasPreviousNotes = true;
-                            notes = $"{(entry.Value.StartTime)}:00 - {entry.Value.EndTime}:00";
+                            notes = $"{(entry.Value.StartTime)}:00 - {entry.Value.EndTime - 1}:59";
                         }
                         else if (entry.Value.PreviousMissionID != 0)
                         {

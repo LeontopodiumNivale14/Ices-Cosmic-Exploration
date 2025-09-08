@@ -49,7 +49,7 @@ public sealed partial class ICE
             {
                 var timeSheet = Svc.Data.GetExcelSheet<WKSMissionLotterySpecialCond>().GetRow(timeAndWeather);
                 startTime = timeSheet.Unknown1; // Start Time
-                endTime = timeSheet.Unknown2; // End Time
+                endTime = (uint)timeSheet.Unknown2; // End Time
             }
             else
             {

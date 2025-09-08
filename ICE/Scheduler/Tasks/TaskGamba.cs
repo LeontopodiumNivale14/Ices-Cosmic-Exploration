@@ -1,3 +1,5 @@
+using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using System.Collections.Generic;
 using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
 
@@ -96,7 +98,10 @@ namespace ICE.Scheduler.Tasks
                 EnsureGambaWeightsInitialized();
                 if (GenericHelpers.TryGetAddonMaster<WKSLottery>("WKSLottery", out var gamba) && gamba.IsAddonReady)
                 {
-                    if (PlayerHelper.GetItemCount(45691, out var credits))
+                    var zoneId = PlayerHelper.CurrentTerritory();
+                    var currency = CosmicHelper.CosmicCurrencies[zoneId];
+
+                    if (PlayerHelper.GetItemCount((int)currency, out var credits))
                     {
                         bool confirmEnabled, leftWheelEnabled, rightWheelEnabled;
                         unsafe

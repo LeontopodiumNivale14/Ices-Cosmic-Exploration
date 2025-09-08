@@ -24,6 +24,16 @@ public static partial class CosmicHelper
 
     public static readonly HashSet<uint> WeatherSelection = new() { 13, 14, 15, 16 };
 
+    public static Dictionary<uint, uint> CosmicCurrencies = new()
+    {
+        [1237] = 45691,
+        [1291] = 48146,
+
+        // Placeholders for now
+        [1] = 48147,
+        [2] = 48148,
+    };
+
 
     public static void OpenStellarMission()
     {
