@@ -671,11 +671,11 @@ namespace ICE.Ui
 
                             ImGui.TextWrapped(mission.Weather.ToString());
                         }
-                        else if (mission.Time != 0)
+                        else if (mission.StartTime != 0 || mission.EndTime != 0)
                         {
                             hasPreviousNotes = true;
 
-                            ImGui.TextWrapped($"{2 * (mission.Time - 1)}:00 - {2 * (mission.Time)}:00");
+                            ImGui.TextWrapped($"{mission.StartTime}:00 - {mission.StartTime}:00");
                         }
                         else if (mission.PreviousMissionID != 0)
                         {
@@ -1217,10 +1217,10 @@ namespace ICE.Ui
                             hasPreviousNotes = true;
                             notes = entry.Value.Weather.ToString();
                         }
-                        else if (entry.Value.Time != 0)
+                        else if (entry.Value.StartTime != 0)
                         {
                             hasPreviousNotes = true;
-                            notes = $"{2 * (entry.Value.Time - 1)}:00 - {2 * (entry.Value.Time)}:00";
+                            notes = $"{(entry.Value.StartTime)}:00 - {entry.Value.EndTime}:00";
                         }
                         else if (entry.Value.PreviousMissionID != 0)
                         {

@@ -11,7 +11,7 @@ internal static class ExcelHelper
     internal static ExcelSheet<ClassJob>? ClassJobSheet;
     internal static ExcelSheet<WKSDevGrade>? DevGrade;
     internal static ExcelSheet<WKSMissionUnit>? MoonMissionSheet;
-    internal static ExcelSheet<WKSMissionRecipe>? MoonRecipeSheet;
+    internal static ExcelSheet<WKSMissionRecipe>? wksMissionRecipe;
     internal static ExcelSheet<WKSMissionReward>? ExpSheet;
     internal static ExcelSheet<WKSMissionToDo>? ToDoSheet;
     internal static ExcelSheet<WKSItemInfo>? MoonItemInfoSheet;
@@ -29,7 +29,7 @@ internal static class ExcelHelper
         ClassJobSheet ??= Svc.Data.GetExcelSheet<ClassJob>();
         DevGrade ??= Svc.Data.GetExcelSheet<WKSDevGrade>();
         MoonMissionSheet ??= Svc.Data.GetExcelSheet<WKSMissionUnit>();
-        MoonRecipeSheet ??= Svc.Data.GetExcelSheet<WKSMissionRecipe>();
+        wksMissionRecipe ??= Svc.Data.GetExcelSheet<WKSMissionRecipe>();
         ExpSheet ??= Svc.Data.GetExcelSheet<WKSMissionReward>();
         ToDoSheet ??= Svc.Data.GetExcelSheet<WKSMissionToDo>();
         MoonItemInfoSheet ??= Svc.Data.GetExcelSheet<WKSItemInfo>();

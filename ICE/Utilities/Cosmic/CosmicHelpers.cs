@@ -22,6 +22,8 @@ public static partial class CosmicHelper
         { 5, "V" }
     };
 
+    public static readonly HashSet<uint> WeatherSelection = new() { 13, 14, 15, 16 };
+
 
     public static void OpenStellarMission()
     {

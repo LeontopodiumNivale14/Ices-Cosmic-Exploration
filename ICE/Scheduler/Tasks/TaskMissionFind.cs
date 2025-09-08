@@ -828,7 +828,7 @@ namespace ICE.Scheduler.Tasks
                 }
                 else if (!AddonHelper.IsAddonActive("WKSMission"))
                 {
-                    if (CosmicHelper.CurrentLunarMission == 0 && CosmicHelper.MissionInfoDict[MissionId].Time != 0) // If Mission is Locked
+                    if (CosmicHelper.CurrentLunarMission == 0 && (CosmicHelper.MissionInfoDict[MissionId].StartTime != 0 && CosmicHelper.MissionInfoDict[MissionId].EndTime != 0)) // If Mission is Locked
                     {
                         BlacklistedMission.Add(MissionId);
                         SchedulerMain.State = IceState.GrabMission;
@@ -922,7 +922,7 @@ namespace ICE.Scheduler.Tasks
                 if (jobIds.Any(job => job == currentClassJob)) // Might still be the problem child... need to check upon re-write of this nightmare of a nest
                 {
                     bool hasMissionAtThisTime = TimedMissions
-                        .Any(mission => currentTimedBonus.Key.start == 2 * (CosmicHelper.MissionInfoDict[mission.Id].Time - 1));
+                        .Any(mission => currentTimedBonus.Key.start == 2 * (CosmicHelper.MissionInfoDict[mission.Id].StartTime - 1));
                     if (hasMissionAtThisTime)
                         SchedulerMain.State &= ~IceState.Waiting;
                 }

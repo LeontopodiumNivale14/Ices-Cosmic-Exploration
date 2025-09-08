@@ -47,7 +47,8 @@ public static unsafe partial class CosmicHelper
         public uint Rank { get; set; }
         public MissionAttributes Attributes { get; set; }
         public uint TimeLimit { get; set; }
-        public uint Time { get; set; }
+        public uint StartTime { get; set; }
+        public uint EndTime { get; set; }
         public CosmicWeather Weather { get; set; }
         public uint RecipeId { get; set; } = 0;
         public uint BronzeRequirement { get; set; }

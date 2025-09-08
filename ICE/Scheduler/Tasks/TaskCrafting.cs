@@ -172,7 +172,10 @@ namespace ICE.Scheduler.Tasks
                 OOMSub = OOMSub || SchedulerMain.DebugOOMSub;
 #endif
 
-                if (OOMMain && (OOMSub || !needPreCraft) && CosmicHelper.CurrentLunarMission < 361 && !SchedulerMain.AnimationLockAbandonState) // We only OOM if both are true: 1) Main is OOM, 2) Either Sub is OOM and we somehow don't need PreCrafts.
+
+                bool pureCraft = !CosmicHelper.GatheringJobList.Contains((int)CosmicHelper.CurrentMissionInfo.JobId);
+
+                if (OOMMain && (OOMSub || !needPreCraft) && pureCraft && !SchedulerMain.AnimationLockAbandonState) // We only OOM if both are true: 1) Main is OOM, 2) Either Sub is OOM and we somehow don't need PreCrafts.
                 {
                     IceLogging.Error($"[Crafting] [OOM] Not enough to craft");
                     SchedulerMain.State = IceState.AbortInProgress;
