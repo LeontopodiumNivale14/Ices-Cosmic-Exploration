@@ -14,7 +14,7 @@ namespace ICE.Utilities
                                                            "Ausgewählte Mission wird gestartet.Fortfahren?",
                                                            "Commencer la mission sélectionnée ?",
                                                            "選択したミッションを開始します。よろしいですか？",
-                                                           "确定要开始此任务吗？", "선택한 임무를 시작하시겠습니까?"
+                                                           "确定要开始此任务吗？", "確定要開始此任務嗎？", "선택한 임무를 시작하시겠습니까?"
                                                           ];
 
         internal static HashSet<string> abandonStrings = ["Abandon mission?",            // English
@@ -22,6 +22,7 @@ namespace ICE.Utilities
                                                           "Êtes-vous sûre de vouloir abandonner la mission en cours ?", // French
                                                           "受注中のミッションを破棄します。", // Japanese
                                                           "确定要放弃已领取的任务吗？",      // Chinese
+                                                          "確定要放棄已領取的任務嗎？",
                                                           "수락한 임무를 포기하시겠습니까?"  // Korean?
                                                           ]; 
 
