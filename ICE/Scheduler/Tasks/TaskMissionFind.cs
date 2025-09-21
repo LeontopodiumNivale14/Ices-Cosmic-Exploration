@@ -848,7 +848,7 @@ namespace ICE.Scheduler.Tasks
             {
                 if (TryGetAddonMaster<SelectYesno>("SelectYesno", out var select) && select.IsAddonReady)
                 {
-                    string[] abandonStrings = ["受注中のミッションを破棄します。", "Abandon mission?", "Aktuelle Mission abbrechen?", "Êtes-vous sûre de vouloir abandonner la mission en cours ?", "确定要放弃已领取的任务吗？", "수락한 임무를 포기하시겠습니까?"];
+                    string[] abandonStrings = ["受注中のミッションを破棄します。", "Abandon mission?", "Aktuelle Mission abbrechen?", "Êtes-vous sûr de vouloir abandonner la mission en cours ?", "确定要放弃已领取的任务吗？", "수락한 임무를 포기하시겠습니까?"];
                     if (abandonStrings.Any(select.Text.Contains) || !C.RejectUnknownYesno)
                     {
                         IceLogging.Debug($"[Abandoning Mission] Expected Abandon window: {select.Text}");
