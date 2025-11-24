@@ -201,6 +201,7 @@ MissionID,Class,MissionName,Score
 200,LTW,Test Material Gloves,17
 201,LTW,High-grade Rest Lounges,17
 202,LTW,High-durability Leather String,54
+203,LTW,Premium High-grade Paper,51
 204,LTW,Research Plant Rug,52
 205,LTW,Thermal Leather,41
 206,LTW,Lunar Flora Test Processing,84
@@ -327,6 +328,7 @@ MissionID,Class,MissionName,Score
 327,CUL,Emergency Foodstuff Development,8
 328,CUL,Essential Whole Meals,6
 329,CUL,Experimental Foodstuffs,16
+330,CUL,Water-resistant Lubricant,54
 331,CUL,Experimental Potables,9
 332,CUL,Launch Party Foodstuffs,16
 333,CUL,Home-cooked Seafood Meal,18
@@ -376,6 +378,7 @@ MissionID,Class,MissionName,Score
 377,MIN,Lunar Yellow Copper Ore,11
 378,MIN,Technique Appraisal,11
 379,MIN,Energization Materials,11
+380,MIN,Fine-grade Processing Materials,14
 381,MIN,Stellar Repair Materials,27
 382,MIN,Alloy Processing Materials,27
 383,MIN,Crater Extraction,20
@@ -420,6 +423,7 @@ MissionID,Class,MissionName,Score
 422,BTN,Blue Fiber Collection Appraisal,11
 423,BTN,Technique Appraisal,11
 424,BTN,Energization Materials,11
+425,BTN,Fine-grade Processing Materials,14
 426,BTN,Stellar Repair Materials,27
 427,BTN,Tanning Agents,27
 428,BTN,Experimental Cultivars,20
@@ -427,8 +431,10 @@ MissionID,Class,MissionName,Score
 430,BTN,Fungi Collection,27
 431,BTN,Fiber Collection Appraisal,27
 432,BTN,EX: Precise Survey,54
+433,BTN,EX: Alchemical Refinement Materials,79
 434,BTN,EX: Southwestern Survey,86
 435,BTN,EX: Precise Lunar Nadir Survey,113
+436,BTN,EX+: Rare Material Extraction,101
 437,BTN,EX+: Supplemental Processing Materials,164
 438,BTN,Hub Vicinity Gathering I,27
 439,BTN,EX: Hub Vicinity Gathering II,93
@@ -436,13 +442,17 @@ MissionID,Class,MissionName,Score
 441,BTN,EX: High-grade Energization Materials II,93
 442,BTN,EX+: High-grade Energization Materials III,189
 443,BTN,EX: Fine-grade Water Filter Materials I,54
+444,BTN,EX+: Fine-grade Water Filter Materials II,167
 445,BTN,Fine-grade Air Filter Materials I,100
+446,BTN,EX+: Fine-grade Air Filter Materials III,193
+447,BTN,EX: Fine-grade Air Filter Materials II,154
 448,BTN,EX+: Folkloric Materials I,119
 449,BTN,EX+: Folkloric Materials II,237
 450,BTN,EX+: Folkloric Materials III,270
 451,FSH,Lunch Emergency,2
 452,FSH,Large Aquatic Specimens,2
 453,FSH,Western Water Inspection,6
+454,FSH,Aquatic Foodstuffs,4
 455,FSH,Weeping Pool Ecological Survey,4
 456,FSH,Assorted Alchemical Materials,4
 457,FSH,Big Fish,5
@@ -948,6 +958,7 @@ MissionID,Class,MissionName,Score
 957,BTN,EX: Phaenna Glass,51
 958,BTN,EX: Mutated Fungi Survey,58
 959,BTN,EX: Capsule Chasm Survey,183
+960,BTN,EX+: Hyper-aetheroconductivity Research,126
 961,BTN,EX+: Geothermal Survey,229
 962,BTN,EX+: Fine-grade Heat-resistant Materials,168
 963,BTN,EX+: Optical Noise Reduction Research,167
@@ -980,6 +991,7 @@ MissionID,Class,MissionName,Score
 990,FSH,Aquatic Glass Resource Distribution Survey,23
 991,FSH,EX: Red Cosmomaggot Field Test,57
 992,FSH,EX: Large River Resources,40
+993,FSH,EX: Capsule Pools Distribution Survey,91
 994,FSH,EX+: Large Saltpeter Shore Resources,168
 995,FSH,EX+: Stardust Bait Test,236
 996,FSH,Precision Lens Development Support,22
@@ -988,6 +1000,7 @@ MissionID,Class,MissionName,Score
 999,FSH,EX: Rare Aquatic Resources,105
 1000,FSH,EX: Elemental-esque River Specimens,67
 1001,FSH,Lower Soda-lime Float Distribution Survey,159
+1002,FSH,EX: Bubble Bursters Distribution Survey,106
 1003,FSH,EX+: Fusingway Flow Distribution Survey,380
 1004,FSH,EX+: Elemental-esque Saltpeter Shore Specimens,358
 1005,FSH,EX+: Elemental-esque Chasm Specimens,364
@@ -995,28 +1008,33 @@ MissionID,Class,MissionName,Score
 1007,CRP,Wiring Repair Tools,215
 1008,CRP,Mutated Flora Samples,215
 1009,CRP,Glass Dust Cleaning Tools,215
+1010,BSM,Experimental Lightning Rod Materials,215
 1011,BSM,Vitreobotany Tools,215
 1012,BSM,Nozzle Parts,215
 1013,ARM,Upgrade Parts,215
 1014,ARM,Dust Tanks,215
 1015,ARM,Rover Plating,215
 1016,GSM,Precision Components,215
+1017,GSM,Electroconductive Wire,215
 1018,GSM,Spare Transport Parts,215
 1019,LTW,Wiring Repair Gloves,215
 1020,LTW,Reinforced Lumbering Boots,215
 1021,LTW,Dust-filtering Masks,215
 1022,WVR,Repair Cloth,215
+1023,WVR,Hanging Tool Pouches,215
 1024,WVR,Dust Filters,215
 1025,ALC,Wiring Repair Rubber,215
+1026,ALC,Experimental Storage Batteries,215
 1027,ALC,Surface Protectant,215
 1028,CUL,Hot Soup,215
+1029,CUL,Reconfiguration Lubricant,215
 1030,CUL,Water Quality Inspection Samples,215
+1031,MIN,Lightning Rod Materials,139
 1032,MIN,Rare Glass Resources,139
 1033,MIN,Metallic Materials,139
 1034,BTN,Supply Route Clearing,139
 1035,BTN,Glass Flora Samples,139
 1036,BTN,Mutated Flora,139
 1037,FSH,Soup Broth Ingredients,158
+1038,FSH,Oil-extractable Aquatic Life,212
 1039,FSH,Elemental-esque Specimen Acquisition,150
-,CRP,Premium High-grade Paper,51
-,LTW,Premium High-grade Paper,51
