@@ -61,7 +61,10 @@ public sealed partial class ICE
             }
             else
             {
-                weather = (CosmicWeather)(timeAndWeather - 12);
+                if (timeAndWeather == 23)
+                    weather = CosmicWeather.ClearSkies;
+                else
+                    weather = (CosmicWeather)(timeAndWeather - 12);
                 // TODO: Go back and assign enums based on the value instead... or just directly give it a flag. Unsure. Feels dirty
             }
 

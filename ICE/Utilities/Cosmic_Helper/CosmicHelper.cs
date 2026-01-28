@@ -24,7 +24,7 @@ public static unsafe partial class CosmicHelper
     /// Currently contains all the WKSMissionLotterySpecialCond values that are weather based
     /// MAKE SURE. TO UPDATE THIS. COME NEW MOON
     /// </summary>
-    public static readonly HashSet<uint> WeatherSelection = new() { 13, 14, 15, 16 };
+    public static readonly HashSet<uint> WeatherSelection = new() { 13, 14, 15, 16, 23 };
 
     public static List<int> GreyIconList = new List<int>() { 91031, 91032, 91033, 91034, 91035, 91036, 91037, 91038, 91039, 91040, 91041 };
     public static Dictionary<CosmicWeather, int> WeatherIds = new()
@@ -33,6 +33,7 @@ public static unsafe partial class CosmicHelper
         [CosmicWeather.MoonDust] = 60222,
         [CosmicWeather.Clouds] = 60203,
         [CosmicWeather.Rain] = 60207,
+        [CosmicWeather.ClearSkies] = 60201,
     };
 
     public static readonly int MinimumLevel = 10;
