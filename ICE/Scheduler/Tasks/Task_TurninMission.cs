@@ -235,12 +235,18 @@ namespace ICE.Scheduler.Tasks
 
         public static bool? JobSwapCheck()
         {
-            if (Player.Job != Mission_Settings.StartJob && Mission_Settings.StartJob != 0)
+            if (Mission_Settings.ReturnToOriginalJob && Player.Job != Mission_Settings.StartJob && Mission_Settings.StartJob != 0)
             {
+                // Mission_Settings.ReturnToOriginalJob
                 if (EzThrottler.Throttle("Swapping to crafter job", 1000))
                     GearsetHandler.TaskClassChange((Job)Mission_Settings.StartJob);
 
                 return false;
+            }
+            else if (!Mission_Settings.ReturnToOriginalJob)
+            {
+                Mission_Settings.StartJob = Player.Job;
+                return true;
             }
             else
             {

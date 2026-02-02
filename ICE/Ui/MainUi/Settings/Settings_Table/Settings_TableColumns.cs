@@ -133,6 +133,7 @@ public static class Settings_TableColumns
         }
 
         ImGui.Checkbox("Stop after current mission", ref Mission_Settings.StopAfterCurrent);
+        ImGui.Checkbox("Return to original class after mission", ref Mission_Settings.ReturnToOriginalJob);
         bool relicTurnin = C.TurninRelic;
         if (ImGui.Checkbox($"Turnin if relic is complete##RelicTurnin_GeneralSetting", ref relicTurnin))
         {

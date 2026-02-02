@@ -6,6 +6,7 @@ namespace ICE.Utilities
     {
         // States that get set in the main Ui
         internal static bool StopAfterCurrent = false;
+        internal static bool ReturnToOriginalJob = true;
         internal static uint previouslyAbandoned = 0;
 
         // Gather Specifics

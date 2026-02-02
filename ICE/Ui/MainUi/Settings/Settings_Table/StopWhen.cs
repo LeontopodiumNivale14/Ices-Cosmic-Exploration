@@ -144,6 +144,8 @@ namespace ICE.Ui.MainUi.Settings.Settings_Table
             }
 
             #endregion
+
+            ImGui.Checkbox("Return to original class after mission", ref Mission_Settings.ReturnToOriginalJob);
         }
     }
 }
