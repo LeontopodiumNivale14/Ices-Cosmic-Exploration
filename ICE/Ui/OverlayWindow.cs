@@ -16,7 +16,7 @@ namespace ICE.Ui
         private uint selectedJob = C.SelectedJob;
         public OverlayWindow() : base("ICE Overlay")
         {
-            Flags = ImGuiWindowFlags.None;
+            Flags = ImGuiWindowFlags.AlwaysAutoResize;
 
             P.windowSystem.AddWindow(this);
         }
