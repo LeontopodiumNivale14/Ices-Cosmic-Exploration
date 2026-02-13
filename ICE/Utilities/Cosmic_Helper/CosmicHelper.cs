@@ -19,25 +19,6 @@ public static unsafe partial class CosmicHelper
     public static readonly List<uint> CrafterJobList = [8, 9, 10, 11, 12, 13, 14, 15];
     public static readonly List<uint> GatheringJobList = [16, 17, 18];
 
-    public static string GetJobName(uint jobId)
-    {
-        return jobId switch
-        {
-            8 => "Carpenter",
-            9 => "Blacksmith",
-            10 => "Armorer",
-            11 => "Goldsmith",
-            12 => "Leatherworker",
-            13 => "Weaver",
-            14 => "Alchemist",
-            15 => "Culinarian",
-            16 => "Miner",
-            17 => "Botanist",
-            18 => "Fisher",
-            _ => "Unknown"
-        };
-    }
-
 
     /// <summary>
     /// Currently contains all the WKSMissionLotterySpecialCond values that are weather based

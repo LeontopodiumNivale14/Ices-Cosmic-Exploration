@@ -123,6 +123,9 @@ public static class ConfigMigration
         C.StopOnceHitCosmicScore = old.StopOnceHitCosmicScore;
         C.CosmicScoreCap = old.CosmicScoreCap;
         C.StopOnceRelicFinished = old.StopOnceRelicFinished;
+        C.SequenceMissionPriority = old.SequenceMissionPriority;
+        C.WeatherMissionPriority = old.WeatherMissionPriority;
+        C.TimedMissionPriority = old.TimedMissionPriority;
 
         if (old.MissionConfig != null)
         {

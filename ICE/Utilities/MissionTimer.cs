@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using static ICE.ConfigFiles.Config.MissionSettings;
-using static ICE.Ui.MainUi.ModeSelect_Modes.modeSelect_TableInfo;
+using static ICE.Ui.MainUi.ModeSelect.modeSelect_TableInfo;
 
 public class MissionTimer
 {

@@ -7,7 +7,7 @@ using ICE.Utilities.GatheringHelper;
 using Lumina.Excel.Sheets;
 using System.Collections.Generic;
 using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
-using static ICE.Ui.MainUi.ModeSelect_Modes.modeSelect_TableInfo;
+using static ICE.Ui.MainUi.ModeSelect.modeSelect_TableInfo;
 using static ICE.Utilities.CosmicHelper;
 
 namespace ICE.Scheduler.Tasks
@@ -106,7 +106,7 @@ namespace ICE.Scheduler.Tasks
             SpecialMissionCount = 0;
             BasicMissionCount = 0;
 
-            uint currentJobId = Mission_Settings.SelectedJob;
+            uint currentJobId = (uint)Mission_Settings.StartJob;
             IceLogging.Debug($"Show all provisionals: {C.GrindAllProvisionals}");
 
             bool specialMode = C.XPLeveling_Mode || C.XPRelicGrind;
@@ -366,7 +366,7 @@ namespace ICE.Scheduler.Tasks
         }
         public static bool? SelectProperClass()
         {
-            var jobTab = (int)Mission_Settings.SelectedJob - 8;
+            var jobTab = (int)Mission_Settings.StartJob - 8;
             IceLogging.Debug($"Should be going to job tab: {jobTab}");
             if (GenericHelpers.TryGetAddonMaster<WKSMission>("WKSMission", out var missionInfo) && missionInfo.IsAddonReady)
             {
@@ -386,14 +386,14 @@ namespace ICE.Scheduler.Tasks
                         return false;
                     }
 
-                    if (!missionSheet.Jobs.Contains(Mission_Settings.SelectedJob))
+                    if (!missionSheet.Jobs.Contains((uint)Mission_Settings.StartJob))
                     {
                         // We're not in the correct tab, going to return false and make sure we select the proper one
                         if (EzThrottler.Throttle("Selecting the right job tab", 1000))
                         {
                             string jobString = string.Join(", ", CosmicHelper.SheetMissionDict[mission.MissionId].Jobs);
 
-                            IceLogging.Debug($"Selecting proper job tab. Expecting: {jobTab} | Job: {(int)Mission_Settings.SelectedJob} | On job page: {jobString} | MissionID: {mission.MissionId}");
+                            IceLogging.Debug($"Selecting proper job tab. Expecting: {jobTab} | Job: {(int)Mission_Settings.StartJob} | On job page: {jobString} | MissionID: {mission.MissionId}");
                             missionInfo.SelectClass[jobTab].Select();
                         }
 

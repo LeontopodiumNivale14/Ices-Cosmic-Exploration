@@ -64,6 +64,58 @@ namespace ICE.Ui.DebugWindowTabs
                         ImGui.Text($"{Task_CheckScore.CurrentRank()}");
 
 
+                        /*
+                        if (x.CurrentScore == null)
+                        {
+                            if (EzThrottler.Throttle("Throwing error message"))
+                            {
+                                IceLogging.Error("Score was not obtainable");
+                            }
+                            ImGui.Text("???");
+                        }
+                        else
+                        {
+                            ImGui.Text($"{x.CurrentScore.Value}");
+                        }
+
+                        ImGui.TableNextRow();
+
+                        ImGui.TableSetColumnIndex(0);
+                        ImGui.Text("Silver Score:");
+
+                        ImGui.TableNextColumn();
+                        if (x.CurrentScore == null)
+                        {
+                            if (EzThrottler.Throttle("Throwing error message"))
+                            {
+                                IceLogging.Error("Score was not obtainable");
+                            }
+                            ImGui.Text("???");
+                        }
+                        else
+                        {
+                            ImGui.Text($"{x.SilverScore.Value}");
+                        }
+
+                        ImGui.TableNextRow();
+
+                        ImGui.TableSetColumnIndex(0);
+                        ImGui.Text("Gold Score:");
+
+                        ImGui.TableNextColumn();
+                        if (x.CurrentScore == null)
+                        {
+                            if (EzThrottler.Throttle("Throwing error message"))
+                            {
+                                IceLogging.Error("Score was not obtainable");
+                            }
+                            ImGui.Text("???");
+                        }
+                        else
+                        {
+                            ImGui.Text($"{x.GoldScore.Value}");
+                        }
+                        */
                         ImGui.TableNextRow();
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text("Is Mission Timed out");

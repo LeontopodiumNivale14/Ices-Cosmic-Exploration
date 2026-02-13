@@ -2,11 +2,10 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using ICE.Utilities.ImGuiTools;
 using System.Collections.Generic;
 using System.Reflection;
 using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
-using static ICE.Ui.MainUi.ModeSelect_Modes.modeSelect_TableInfo;
+using static ICE.Ui.MainUi.ModeSelect.modeSelect_TableInfo;
 
 namespace ICE.Ui.DebugWindowTabs
 {
@@ -15,20 +14,8 @@ namespace ICE.Ui.DebugWindowTabs
         private static uint best_LevelMission = 0;
         private static uint playerLevel = 90;
 
-        private static int currentXp = 0;
-        private static int neededXp = 100;
-        private static int maxXp = 200;
-
         public static unsafe void Draw()
         {
-            ImGui.SetNextItemWidth(200);
-            ImGui.InputInt("Current XP", ref currentXp);
-            ImGui.SetNextItemWidth(200);
-            ImGui.InputInt("Needed XP", ref neededXp);
-            ImGui.SetNextItemWidth(200);
-            ImGui.InputInt("Max XP", ref maxXp);
-            ImGui_Ice.Draw_XPBar(currentXp, neededXp, maxXp, size: new Vector2(200, 10));
-
             ImGui.Text("Need to actually put the player info here. It got lost");
             ImGui.Spacing();
             ImGui.AlignTextToFramePadding();

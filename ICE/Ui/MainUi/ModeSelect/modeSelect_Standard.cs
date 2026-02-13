@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ICE.Ui.MainUi.ModeSelect_Modes
+namespace ICE.Ui.MainUi.ModeSelect
 {
     internal class modeSelect_Standard
     {
@@ -56,6 +56,32 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
             // Header at the top
             float scale = ImGuiHelpers.GlobalScale;
 
+            bool autoSelectMoon = C.AutoSelectMoon;
+            if (autoSelectMoon)
+            {
+                if (PlayerHelper.IsInSinusArdorum() && (!C.ShowSinusMissions || C.ShowPhaennaMissions || C.ShowOizysMissions))
+                {
+                    C.ShowSinusMissions = true;
+                    C.ShowPhaennaMissions = false;
+                    C.ShowOizysMissions = false;
+                    C.Save();
+                }
+                else if (PlayerHelper.IsInPhaenna() && (C.ShowSinusMissions || !C.ShowPhaennaMissions || C.ShowOizysMissions))
+                {
+                    C.ShowSinusMissions = false;
+                    C.ShowPhaennaMissions = true;
+                    C.ShowOizysMissions = false;
+                    C.Save();
+                }
+                else if (PlayerHelper.IsInOizys() && (C.ShowSinusMissions || C.ShowPhaennaMissions || !C.ShowOizysMissions))
+                {
+                    C.ShowSinusMissions = false;
+                    C.ShowPhaennaMissions = false;
+                    C.ShowOizysMissions = true;
+                    C.Save();
+                }
+            }
+
             using (var headerChild = ImRaii.Child("##modeSelect_StandardHeader", new Vector2(0, 45 * scale), true, ImGuiWindowFlags.NoScrollbar))
             {
                 if (!headerChild.Success) return;
@@ -66,9 +92,9 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
                 string modeType = string.Empty;
                 FontAwesomeIcon modeIcon = FontAwesomeIcon.List;
 
-                bool standard = C.SelectedMode == ModeSelect.Standard;
-                bool relicMode = C.SelectedMode == ModeSelect.RelicMode;
-                bool xpLeveling = C.SelectedMode == ModeSelect.LevelMode;
+                bool relicMode = C.XPRelicGrind;
+                bool xpLeveling = C.XPLeveling_Mode;
+                bool standard = (!relicMode && !xpLeveling);
 
 
                 if (standard)
@@ -105,7 +131,8 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
 
                     if (ImGui.RadioButton("Standard", standard))
                     {
-                        C.SelectedMode = ModeSelect.Standard;
+                        C.XPRelicGrind = false;
+                        C.XPLeveling_Mode = false;
                         C.Save();
                     }
                     ImGuiEx.HelpMarker("Stand Mode \n" +
@@ -114,7 +141,8 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
                                        "-> Select which missions you want to do, and go at it.");
                     if (ImGui.RadioButton("Relic Grind", relicMode))
                     {
-                        C.SelectedMode = ModeSelect.RelicMode;
+                        C.XPRelicGrind = true;
+                        C.XPLeveling_Mode = false;
                         C.Save();
                     }
                     ImGuiEx.HelpMarker("Relic Grind\n" +
@@ -124,7 +152,8 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
 
                     if (ImGui.RadioButton("Leveling Grind", xpLeveling))
                     {
-                        C.SelectedMode = ModeSelect.LevelMode;
+                        C.XPRelicGrind = false;
+                        C.XPLeveling_Mode = true;
                         C.Save();
                     }
                     ImGuiEx.HelpMarker("Leveling Grind\n" +
@@ -238,31 +267,31 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
                 ImGui.TableNextRow();
                 ImGui.TableSetColumnIndex(0);
 
-                bool tableSettingExpanded = ImGui_Ice.DrawCompactCategoryHeader("Table Settings", FontAwesomeIcon.Table);
+                bool tableSettingExpanded = modeSelect_Tools.DrawCompactCategoryHeader("Table Settings", FontAwesomeIcon.Table);
 
                 ImGui.TableNextColumn();
-                bool missionSettingExpanded = ImGui_Ice.DrawCompactCategoryHeader("Mission Settings", FontAwesomeIcon.UserCog);
+                bool missionSettingExpanded = modeSelect_Tools.DrawCompactCategoryHeader("Mission Settings", FontAwesomeIcon.UserCog);
 
                 bool relicGrindExpanded = false;
-                if (C.SelectedMode == ModeSelect.RelicMode)
+                if (C.XPRelicGrind)
                 {
                     ImGui.TableNextColumn();
-                    relicGrindExpanded = ImGui_Ice.DrawCompactCategoryHeader("Relic Grind Settings", FontAwesomeIcon.ArrowUpRightDots);
+                    relicGrindExpanded = modeSelect_Tools.DrawCompactCategoryHeader("Relic Grind Settings", FontAwesomeIcon.ArrowUpRightDots);
                 }
 
                 bool completionExpanded = false;
-                if (completionExpanded)
+                if (C.ShowCompletionWindow)
                 {
                     ImGui.TableNextColumn();
-                    completionExpanded = ImGui_Ice.DrawCompactCategoryHeader("Completion Table Settings", FontAwesomeIcon.Trophy);
+                    completionExpanded = modeSelect_Tools.DrawCompactCategoryHeader("Completion Table Settings", FontAwesomeIcon.Trophy);
                 }
 
                 bool showPlaylistExpanded = false;
-                bool standard = C.SelectedMode == ModeSelect.Standard;
+                bool standard = !(C.XPRelicGrind || C.XPLeveling_Mode || C.ShowCompletionWindow);
                 if (standard)
                 {
                     ImGui.TableNextColumn();
-                    showPlaylistExpanded = ImGui_Ice.DrawCompactCategoryHeader("Mission Presets", FontAwesomeIcon.PlayCircle);
+                    showPlaylistExpanded = modeSelect_Tools.DrawCompactCategoryHeader("Mission Presets", FontAwesomeIcon.PlayCircle);
                 }
 
                 bool showJobSwapExpanded = false;
@@ -271,10 +300,10 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
                 if (relicJobSwap)
                 {
                     ImGui.TableNextColumn();
-                    showJobSwapExpanded = ImGui_Ice.DrawCompactCategoryHeader("Relic Job Swap", FontAwesomeIcon.Hammer);
+                    showJobSwapExpanded = modeSelect_Tools.DrawCompactCategoryHeader("Relic Job Swap", FontAwesomeIcon.Hammer);
                 }
 
-                bool showNextColumn = tableSettingExpanded || missionSettingExpanded || (relicGrindExpanded && C.SelectedMode == ModeSelect.RelicMode) || showPlaylistExpanded || showJobSwapExpanded;
+                bool showNextColumn = tableSettingExpanded || missionSettingExpanded || (relicGrindExpanded && C.XPRelicGrind) || (completionExpanded && C.ShowCompletionWindow) || showPlaylistExpanded || showJobSwapExpanded;
 
                 if (showNextColumn)
                 {
@@ -291,7 +320,7 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
                         Settings_TableColumns.GeneralMissionSettings();
                     }
 
-                    if (C.SelectedMode == ModeSelect.RelicMode)
+                    if (C.XPRelicGrind)
                     {
                         ImGui.TableNextColumn();
                         if (relicGrindExpanded)
@@ -349,7 +378,7 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
                         }
                     }
 
-                    if (false)
+                    if (C.ShowCompletionWindow)
                     {
                         ImGui.TableNextColumn();
                         if (completionExpanded)
@@ -372,7 +401,7 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
                         }
                     }
 
-                    if (C.SelectedMode == ModeSelect.Standard)
+                    if (standard)
                     {
                         ImGui.TableNextColumn();
 
@@ -637,23 +666,23 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
                     if (!missionButtons.Success)
                         return;
 
-                    ImGui_Ice.DrawCategoryButton($"Red Alert [{criticalEnabled}]", "main_Critical");
-                    ImGui_Ice.DrawCategoryButton($"Sequence [{sequenceEnabled}]", "main_Sequence");
-                    ImGui_Ice.DrawCategoryButton($"Weather [{weatherEnabled}]", "main_Weather");
-                    ImGui_Ice.DrawCategoryButton($"Timed [{timedEnabled}]", "main_Timed");
-                    ImGui_Ice.DrawCategoryButton($"A Rank [{aRankEnabled}]", "main_ARank");
-                    ImGui_Ice.DrawCategoryButton($"B Rank [{bRankEnabled}]", "main_BRank");
-                    ImGui_Ice.DrawCategoryButton($"C Rank [{cRankEnabled}]", "main_CRank");
-                    ImGui_Ice.DrawCategoryButton($"D Rank [{dRankEnabled}]", "main_DRank");
+                    ImGui_Tools.DrawCategoryButton($"Critical [{criticalEnabled}]", "main_Critical");
+                    ImGui_Tools.DrawCategoryButton($"Sequence [{sequenceEnabled}]", "main_Sequence");
+                    ImGui_Tools.DrawCategoryButton($"Weather [{weatherEnabled}]", "main_Weather");
+                    ImGui_Tools.DrawCategoryButton($"Timed [{timedEnabled}]", "main_Timed");
+                    ImGui_Tools.DrawCategoryButton($"A Rank [{aRankEnabled}]", "main_ARank");
+                    ImGui_Tools.DrawCategoryButton($"B Rank [{bRankEnabled}]", "main_BRank");
+                    ImGui_Tools.DrawCategoryButton($"C Rank [{cRankEnabled}]", "main_CRank");
+                    ImGui_Tools.DrawCategoryButton($"D Rank [{dRankEnabled}]", "main_DRank");
                     var selectedClass = C.SelectedJob;
                     var jobIcon = CosmicHelper.JobIconDict[selectedClass];
-                    ImGui_Ice.DrawImageBox(jobIcon, "Selected", spacingAfter: 5);
+                    ImGui_Tools.DrawImageBox(jobIcon, "Selected", spacingAfter: 5);
                     if (allEnabled > 0)
                     {
-                        ImGui_Ice.DrawCategoryButton($"All Enabled [{allEnabled}]", "main_AllEnabled");
+                        ImGui_Tools.DrawCategoryButton($"All Enabled [{allEnabled}]", "main_AllEnabled");
                     }
 
-                    ImGui_Ice.EndCategoryButtonRow();
+                    ImGui_Tools.EndCategoryButtonRow();
                 }
 
                 if (C.ShowExtraMissionInfo)
@@ -687,7 +716,7 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
         {
             using (var missionTableChild = ImRaii.Child("##modeSelect_MissionTables", new Vector2(0, 0), false))
             {
-                var enabledTabs = C.Mission_Tabs;
+                var enabledTabs = ImGui_Tools.CategoryStates;
                 modeSelect_TableInfo.missionList["All Enabled"] = modeSelect_TableInfo.missionList["All Enabled"]
                     .OrderBy(x => {
                         var missionInfo = CosmicHelper.SheetMissionDict[x.id];

@@ -1,4 +1,8 @@
-﻿namespace ICE.ConfigFiles;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ICE.ConfigFiles;
 
 public partial class Config
 {

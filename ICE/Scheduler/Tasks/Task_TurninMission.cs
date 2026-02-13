@@ -237,10 +237,10 @@ namespace ICE.Scheduler.Tasks
         {
             if (CosmicHelper.SheetMissionDict[PreviousMissionId].Jobs.Count == 2)
             {
-                if (Player.Job != (Job)Mission_Settings.SelectedJob && Mission_Settings.SelectedJob != 0)
+                if (Player.Job != Mission_Settings.StartJob && Mission_Settings.StartJob != 0)
                 {
                     if (EzThrottler.Throttle("Swapping to crafter job", 1000))
-                        GearsetHandler.TaskClassChange((Job)Mission_Settings.SelectedJob);
+                        GearsetHandler.TaskClassChange((Job)Mission_Settings.StartJob);
 
                     return false;
                 }

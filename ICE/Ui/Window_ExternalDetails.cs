@@ -1,5 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using ICE.Ui.MainUi.ModeSelect_Modes;
+using ICE.Ui.MainUi.ModeSelect;
 using System;
 using System.Collections.Generic;
 using System.Text;

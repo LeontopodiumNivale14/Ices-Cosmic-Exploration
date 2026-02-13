@@ -8,9 +8,6 @@ namespace ICE.Utilities
         internal static bool StopAfterCurrent = false;
         internal static uint previouslyAbandoned = 0;
 
-        internal static ModeSelect Mode = ModeSelect.Standard;
-        internal static uint SelectedJob = 8;
-
         // Gather Specifics
         internal static Vector2 previousMap = Vector2.Zero;
         internal static int nodeCounter = 0;
@@ -41,6 +38,7 @@ namespace ICE.Utilities
         internal static bool Abandon = false;
         internal static bool AnimationLockAbandonState = false;
         internal static uint PossiblyStuck = 0;
+        internal static Job StartJob = 0;
 
         internal static Vector3? NearestCollectionPoint = null;
 

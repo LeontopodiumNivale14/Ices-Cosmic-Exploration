@@ -1,4 +1,4 @@
-using Dalamud.Game.ClientState.Conditions;
+﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Gui.Toast;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;

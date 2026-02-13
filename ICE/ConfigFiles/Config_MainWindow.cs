@@ -13,8 +13,6 @@ public partial class Config
     public bool XPLeveling_Mode { get; set; } = false;
     public bool XPRelicIgnoreManual { get; set; } = false;
     public bool XPRelicOnlyEnabled { get; set; } = false;
-
-    // These aren't used at all... Need to remove them
     public bool ShowCritical { get; set; } = true;
     public bool ShowSequential { get; set; } = true;
     public bool ShowWeather { get; set; } = true;

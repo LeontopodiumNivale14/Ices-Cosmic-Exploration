@@ -11,7 +11,7 @@ namespace ICE.Scheduler
         {
             State = Start;
             IceLogging.Info($"Setting State to: {State} / Enabling Plugin");
-            Mission_Settings.SelectedJob = (uint)Player.Job;
+            Mission_Settings.StartJob = Player.Job;
             GenericManager.StorePandoraStates();
             return true;
         }

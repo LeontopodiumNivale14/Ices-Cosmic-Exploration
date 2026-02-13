@@ -176,9 +176,6 @@ namespace ICE.Scheduler.Tasks
         }
         public static bool CanBuyDroneBoxes()
         {
-            var territoryId = Player.Territory.RowId;
-            // TODO: Code in Dronebit Info table (CosmicHelper)
-
             uint oizysDronebit = 49170;
             uint oizysDroneBox = 50414;
 
@@ -255,6 +252,9 @@ namespace ICE.Scheduler.Tasks
             return true;
         }
 
+        private static int currentRefresh = 0;
+        private static readonly int maxRefresh = 1;
+
         public static unsafe bool? CheckBoxStatus()
         {
             droneLoc = Vector3.Zero;
@@ -264,6 +264,7 @@ namespace ICE.Scheduler.Tasks
             var marker = mapMarkers.Where(x => x.IconId == 63989).FirstOrDefault();
             if (marker != null)
             {
+                currentRefresh = 0;
                 IceLogging.Debug("We've found the map flag! Setting it for us to travel to", tag);
                 droneLoc = marker.Position;
                 P.TaskManager.EnqueueMulti
@@ -275,6 +276,7 @@ namespace ICE.Scheduler.Tasks
             }
             else
             {
+                currentRefresh = 0;
                 if (PlayerHelper.GetItemCount(50414, out var count) && count > 0)
                 {
                     IceLogging.Debug("We have a crate to use! Initiating the task to start using it", tag);
@@ -323,13 +325,13 @@ namespace ICE.Scheduler.Tasks
                     {
                         Utils.TargetgameObject(artifact);
                         Utils.InteractWithObject(artifact);
-                        IceLogging.Verbose($"Drone has been found! Interacting with it", tag);
+                        IceLogging.Verbose($"Drone has been found! Interacting with it");
                     }
                 }
             }
             else
             {
-                P.TaskManager.Enqueue(() => RefreshMapInfo(), "Queueing map refresh info", Utils.TaskConfig);
+                P.TaskManager.Enqueue(() => RefreshMapInfo(), "Queueing map refresh info");
                 return true;
             }
 

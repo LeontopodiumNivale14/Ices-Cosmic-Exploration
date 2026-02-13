@@ -3,14 +3,19 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Textures;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game.WKS;
+using ICE.Sounds;
 using ICE.Ui.MainUi;
 using ICE.Ui.MainUi.HelpFolder;
-using ICE.Ui.MainUi.ModeSelect_Modes;
+using ICE.Ui.MainUi.ModeSelect;
 using ICE.Ui.MainUi.Settings;
 using ICE.Ui.MainUi.Settings.Settings_Table;
 using ICE.Ui.SettingTabs;
+using ICE.Utilities.Cosmic;
+using ICE.Utilities.Cosmic_Helper;
 using System.Collections.Generic;
 using System.Reflection;
+using static MissionTimer;
 
 namespace ICE.Ui
 {
@@ -58,57 +63,68 @@ namespace ICE.Ui
             }
         }
 
-        private static readonly Dictionary<string, Action> SelectedView = new()
-        {
-            // Cosmic Helper
-            ["modeSelect_MissionSetup"] = () =>
-            {
-                if (C.ShowCompletionWindow)
-                {
-                    C.ShowCompletionWindow = false;
-                    C.Save();
-                }
-                modeSelect_Standard.Draw();
-            },
-            ["modeSelect_Completion"] = () =>
-            {
-                if (!C.ShowCompletionWindow)
-                {
-                    C.ShowCompletionWindow = true;
-                    C.Save();
-                }
-                modeSelect_Standard.Draw();
-            },
-            ["modeSelect_CosmicAgenda"] = () => modeSelect_Agenda.Draw(),
-
-            // Settings
-            ["setting_StopWhen"] = () => StopWhen.Draw(),
-            ["setting_GatheringProfile"] = () => GatherSettings.Draw(),
-            ["setting_MissionPriority"] = () => Priority_Settings.Draw(),
-            ["setting_Misc"] = () => Misc_Settings.Draw(),
-            ["helpSelect_AllSettings"] = () => helpSelect_AllSettings.Draw(),
-
-            // Hub Activities
-            ["hubActivities_CreditShopping"] = () => ShoppingTab.Draw(),
-            ["hubActivites_GambaSetting"] = () => GambaWheel.Draw(),
-            ["hubActivies_DroneSetting"] = () => Shop_Dronebit.Draw(),
-
-            // Help Section
-            ["help_PluginInstall"] = () => helpSelect_Required.Draw(),
-            ["help_PluginLogs"] = () => helpSelect_Logs.Draw_Helper(),
-        };
-
         private static void MainBody()
         {
-            var selectedWindow = C.MainUi_SelectedWindow;
+            switch (SelectableSidebar.currentSelection)
+            {
+                // Cosmic Helper
+                case "modeSelect_Standard":
+                    if (C.ShowCompletionWindow)
+                    {
+                        C.ShowCompletionWindow = false;
+                        C.Save();
+                    }
+                    modeSelect_Standard.Draw();
+                    break;
+                case "modeSelect_Completion":
+                    if (!C.ShowCompletionWindow)
+                    {
+                        C.ShowCompletionWindow = true;
+                        C.Save();
+                    }
+                    modeSelect_Standard.Draw();
+                    break;
 
-            if (SelectedView.TryGetValue(selectedWindow, out var drawAction))
-            {
-                drawAction();
-            }
-            else
-            {
-                ImGui.Text("Hehe");
+                // Settings
+                case "setting_StopWhen":
+                    StopWhen.Draw();
+                    break;
+                case "setting_GatheringProfile":
+                    GatherSettings.Draw();
+                    break;
+                case "setting_MissionPriority":
+                    Priority_Settings.Draw();
+                    break;
+                case "setting_Misc":
+                    Misc_Settings.Draw();
+                    break;
+                case "helpSelect_AllSettings":
+                    helpSelect_AllSettings.Draw();
+                    break;
+
+
+                // Hub Activities
+                case "hubActivities_CreditShopping":
+                    ShoppingTab.Draw();
+                    break;
+                case "hubActivites_GambaSetting":
+                    GambaWheel.Draw();
+                    break;
+                case "hubActivies_DroneSetting":
+                    Shop_Dronebit.Draw();
+                    break;
+
+                // Help Section
+                case "helpSelect_Requirements":
+                    helpSelect_Required.Draw();
+                    break;
+                case "helpSelect_Logs":
+                    helpSelect_Logs.Draw_Helper();
+                    break;
+
+                default:
+                    ImGui.Text("Hehe");
+                    break;
             }
         }
 

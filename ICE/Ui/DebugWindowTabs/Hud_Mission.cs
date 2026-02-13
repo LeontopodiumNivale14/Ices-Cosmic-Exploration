@@ -58,13 +58,6 @@ namespace ICE.Ui.DebugWindowTabs
                     x.CriticalMissions();
                 }
 
-                if (ImGui.Button("Test Mission List"))
-                {
-                    Mission_Settings.SelectedJob = (uint)Player.Job;
-                    Mission_Settings.Mode = C.SelectedMode;
-                    Task_CheckMissions.RefreshMissionLibrary();
-                }
-
                 bool EnableDummyXp = C.UseDummyXp;
                 if (ImGui.Checkbox("Enable Dummy XP", ref EnableDummyXp))
                 {
@@ -101,6 +94,41 @@ namespace ICE.Ui.DebugWindowTabs
                 {
                     C.XPRelicOnlyEnabled = onlyEnabled;
                     C.Save();
+                }
+
+                if (ImGui.CollapsingHeader("Show Following Kinds"))
+                {
+                    bool useDummyRank = C.UseDummyRanks;
+                    bool useDummyA = C.ShowDummyA;
+                    bool useDummyB = C.ShowDummyB;
+                    bool useDummyC = C.ShowDummyC;
+                    bool useDummyD = C.ShowDummyD;
+
+                    if (ImGui.Checkbox("Use Dummy Ranks", ref useDummyRank))
+                    {
+                        C.UseDummyRanks = useDummyRank;
+                        C.Save();
+                    }
+                    if (ImGui.Checkbox("Show A Ranks", ref useDummyA))
+                    {
+                        C.ShowDummyA = useDummyA;
+                        C.Save();
+                    }
+                    if (ImGui.Checkbox("Show B Ranks", ref useDummyB))
+                    {
+                        C.ShowDummyB = useDummyB;
+                        C.Save();
+                    }
+                    if (ImGui.Checkbox("Show C Ranks", ref useDummyC))
+                    {
+                        C.ShowDummyC = useDummyC;
+                        C.Save();
+                    }
+                    if (ImGui.Checkbox("Show D Ranks", ref useDummyD))
+                    {
+                        C.ShowDummyD = useDummyD;
+                        C.Save();
+                    }
                 }
 
                 if (ImGui.Button("Update Dummy XP"))
@@ -186,99 +214,137 @@ namespace ICE.Ui.DebugWindowTabs
 
         private static unsafe uint RelicMissionFinder()
         {
-            if (GenericHelpers.TryGetAddonMaster<WKSMission>("WKSMission", out var missionInfo) && missionInfo.IsAddonReady)
+            if (GenericHelpers.TryGetAddonMaster<WKSMission>("WKSMission", out var x) && x.IsAddonReady)
             {
-                var job = Mission_Settings.SelectedJob;
-                var relicInfo = CosmicHelper.Cosmic_ClassInfo();
-                var classInfo = relicInfo[job];
+                var wksManager = WKSManager.Instance();
+                if (wksManager == null || wksManager->ResearchModule == null || !wksManager->ResearchModule->IsLoaded)
+                    return 0;
 
-                var urgency = new Dictionary<int, float>();
+                var job = (uint)Player.Job;
+                var toolClassId = (byte)(job - 7);
+                var stage = wksManager->ResearchModule->CurrentStages[toolClassId - 1];
+                var nextstate = wksManager->ResearchModule->UnlockedStages[toolClassId - 1];
+
+                if (Svc.Data.GetExcelSheet<WKSCosmoToolClass>().TryGetRow(toolClassId, out var row)) { }
+
+                Dictionary<int, CosmicHelper.XPType> XPTable = new Dictionary<int, CosmicHelper.XPType>();
+
                 if (C.UseDummyXp)
                 {
-                    foreach (var exp in C.DummyXP)
-                    {
-                        urgency[exp.Key] = 1f - exp.Value.CurrentXP / exp.Value.NeededXP;
-                    }
+                    XPTable = C.DummyXP;
                 }
                 else
                 {
-                    foreach (var exp in classInfo.CurrentExp)
+                    for (byte type = 1; type <= 4; type++)
                     {
-                        if (classInfo.Stage_Current != classInfo.Stage_Next)
-                            urgency[exp.Key] = exp.Value.Needed > 0 ? 1f - (float)exp.Value.Current / exp.Value.Needed : 0f;
-                        else
-                            urgency[exp.Key] = 1f - (float)exp.Value.Current / exp.Value.Max;
-                    }
-                }
-                IceLogging.Verbose($"Urgency Exp Values");
-                foreach (var exp in urgency)
-                {
-                    IceLogging.Verbose($"{exp.Key} : Value: {exp.Value:N2}");
-                }
+                        if (!wksManager->ResearchModule->IsTypeAvailable(toolClassId, type))
+                            break;
 
-                List<uint> missionList = new();
-                foreach (var mission in C.MissionConfig)
-                {
-                    if (CosmicHelper.SheetMissionDict.TryGetValue(mission.Key, out var sheetInfo))
-                    {
-                        if (sheetInfo.TerritoryId != Player.Territory.RowId)
-                            continue;
+                        var neededXP = wksManager->ResearchModule->GetNeededAnalysis(toolClassId, type);
 
-                        if (!sheetInfo.Jobs.Contains((uint)Player.Job))
-                            continue;
-
-                        if (sheetInfo.Attributes.HasFlag(MissionAttributes.ProvisionalWeather) || sheetInfo.Attributes.HasFlag(MissionAttributes.ProvisionalSequential)
-                        || sheetInfo.Attributes.HasFlag(MissionAttributes.ProvisionalTimed))
-                            continue;
-
-                        missionList.Add(mission.Key);
-                    }
-                }
-
-                IceLogging.Verbose($"Total Mission Count: {missionList.Count()}");
-
-
-                uint? bestMissionId = null;
-                float bestScore = float.NegativeInfinity;
-                foreach (var missionId in missionList)
-                {
-                    IceLogging.Verbose($"Seeing if menu contains: {missionId}");
-                    var mission = missionInfo.StellerMissions.Where(x => x.MissionId == missionId).FirstOrDefault();
-                    if (mission != null)
-                    {
-                        IceLogging.Verbose($"Mission was valid option: {missionId}");
-                        if (CosmicHelper.SheetMissionDict.TryGetValue(mission.MissionId, out var sheetInfo))
+                        var currentXp = wksManager->ResearchModule->GetCurrentAnalysis(toolClassId, type);
+                        var requiredXp = neededXP - currentXp;
+                        if (!XPTable.ContainsKey(type))
                         {
-                            float score = 0;
-                            foreach (var reward in sheetInfo.RelicXpInfo)
+                            XPTable[type] = new XPType()
                             {
-                                if (urgency.TryGetValue(reward.Key, out var info))
-                                {
-                                    float contribution = info * reward.Value;
-                                    if (contribution > 0)
-                                    {
-                                        score += contribution;
-                                    }
-                                }
-                            }
-                            IceLogging.Verbose($"[{mission.MissionId}] score: {score}");
-                            if (score > bestScore)
-                            {
-                                bestScore = score;
-                                bestMissionId = missionId;
-                            }
+                                CurrentXP = currentXp,
+                                NeededXP = neededXP,
+                            };
                         }
                     }
                 }
 
-                if (bestMissionId != null)
+                var urgencies = new Dictionary<int, float>();
+                for (int i = 0; i < XPTable.Count; i++)
                 {
-                    return bestMissionId.Value;
+                    var bar = XPTable[i + 1];
+                    urgencies[i + 1] = bar.NeededXP > 0 ? 1f - (float)bar.CurrentXP / bar.NeededXP : 0f;
+                    IceLogging.Debug($"XP Type: {i+1} | Urgency: {urgencies[i + 1]}");
                 }
+
+                Dictionary<uint, Dictionary<int, float>> rewardMissions = new();
+                foreach (var availMission in x.StellerMissions)
+                {
+                    var id = availMission.MissionId;
+                    if (CosmicHelper.SheetMissionDict.TryGetValue(id, out var mission))
+                    {
+                        var missionConfig = C.MissionConfig[id];
+
+                        int minLevel = 10;
+                        var rank = mission.Rank;
+                        switch (rank)
+                        {
+                            case 1:
+                                minLevel = 10;
+                                break;
+                            case 2:
+                                minLevel = 50;
+                                break;
+                            case 3:
+                                minLevel = 90;
+                                break;
+                            case 4:
+                            case 5:
+                            case 6:
+                                minLevel = 100;
+                                break;
+                            default:
+                                minLevel = 10;
+                                break;
+                        }
+
+                        bool properLevel = Player.Level <= minLevel;
+                        bool IgnoreManual = C.XPRelicIgnoreManual && missionConfig.ManualMode;
+                        bool IgnoreNotEnabled = C.XPRelicOnlyEnabled && !missionConfig.Enabled;
+
+                        IceLogging.Info($"Mission Info: {id}\n" +
+                                        $"Proper Level: {properLevel} | Mission level: {minLevel} | Player Level: {Player.Level} \n" +
+                                        $"Ignore Manual: {IgnoreManual}\n" +
+                                        $"Enabled: {missionConfig.Enabled} | Ignore cause not enabled: {IgnoreNotEnabled}");
+
+                        if (!properLevel) continue;
+                        if (IgnoreManual) continue;
+                        if (IgnoreNotEnabled) continue;
+
+                        Dictionary<int, float> rewardDict = new();
+                        foreach (var reward in mission.RelicXpInfo.OrderBy(x => x.Key))
+                        {
+                            rewardDict[reward.Key] = reward.Value;
+                        }
+                        rewardMissions[id] = rewardDict;
+                    }
+                }
+
+                int bestIndex = -1;
+                float bestScore = float.NegativeInfinity;
+                IceLogging.Info($"Current viable mission count: {rewardMissions.Count}");
+
+                foreach (var mission in rewardMissions)
+                {
+                    var id = (int)mission.Key;
+                    var reward = mission.Value;
+                    float score = 0f;
+
+                    foreach (var rewardEntry in reward)
+                    {
+                        if (urgencies.TryGetValue(rewardEntry.Key, out var urgency))
+                        {
+                            score += urgency * rewardEntry.Value;
+                        }
+                    }
+
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        bestIndex = id;
+                    }
+                }
+
+                if (bestIndex > 0)
+                    return (uint)bestIndex;
                 else
-                {
                     return 0;
-                }
             }
             else
             {

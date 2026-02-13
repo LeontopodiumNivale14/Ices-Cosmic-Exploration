@@ -1,7 +1,7 @@
 ﻿using ECommons;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using ICE.ConfigFiles;
-using ICE.Ui.MainUi.ModeSelect_Modes;
+using ICE.Ui.MainUi.ModeSelect;
 using ICE.Ui.MainUi.Settings.Settings_Table;
 using ICE.Utilities.Cosmic_Helper;
 using ICE.Utilities.GatheringHelper;
@@ -36,8 +36,6 @@ public sealed partial class ICE
             missionName = missionName.Replace("<->", "");
 
             if (missionName == "")
-                continue;
-            if (entry.ClassJobCategory[0].RowId == 0)
                 continue;
 
             jobs.Add(entry.ClassJobCategory[0].RowId - 1);

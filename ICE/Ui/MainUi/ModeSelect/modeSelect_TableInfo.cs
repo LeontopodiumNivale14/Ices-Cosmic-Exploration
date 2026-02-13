@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
 using static MissionTimer;
 
-namespace ICE.Ui.MainUi.ModeSelect_Modes
+namespace ICE.Ui.MainUi.ModeSelect
 {
     internal class modeSelect_TableInfo
     {

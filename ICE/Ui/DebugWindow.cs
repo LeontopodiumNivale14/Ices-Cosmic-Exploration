@@ -59,8 +59,6 @@ internal class DebugWindow : Window
         ["Relic Info"] = () => Ui_RelicInfo.Draw(),
         ["TaskManager Testing"] = () => Ui_TaskManagerInfo.Draw(),
         ["NPC Box Viewer"] = () => Ui_NpcViewer.Draw(),
-        ["ImGui Testing"] = () => UI_Test.Draw(),
-        ["Relic Info V2"] = () => Ui_ClassInfo.Draw(),
 
         // Sheet Viewer Info
         ["Sheet: Mission Rewards"] = () => Sheet_MissionRewards.Draw(),

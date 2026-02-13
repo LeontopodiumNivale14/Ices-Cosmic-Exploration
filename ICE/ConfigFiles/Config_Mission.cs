@@ -6,30 +6,26 @@ namespace ICE.ConfigFiles;
 
 public partial class Config
 {
-    public ModeSelect SelectedMode { get; set; } = ModeSelect.Standard;
     public bool OnlyGrabMission_Debug { get; set; } = false;
-    public int TargetLevel { get; set; } = 100;
+    public int TargetLevel { get; set; } = 10;
     public bool StopWhenLevel { get; set; } = false;
     public bool StopOnceHitCosmoCredits { get; set; } = false;
-    public int CosmoCreditsCap { get; set; } = 30_000;
+    public int CosmoCreditsCap { get; set; } = 30000;
     public bool StopOnceHitLunarCredits { get; set; } = false;
-    public int LunarCreditsCap { get; set; } = 10_000;
+    public int LunarCreditsCap { get; set; } = 10000;
     public bool StopOnceHitCosmicScore { get; set; } = false;
-    public int CosmicScoreCap { get; set; } = 500_000;
+    public int CosmicScoreCap { get; set; } = 500000;
     public bool StopOnceRelicFinished { get; set; } = false;
+    public byte SequenceMissionPriority { get; set; } = 1;
+    public byte WeatherMissionPriority { get; set; } = 2;
+    public byte TimedMissionPriority { get; set; } = 3;
     public List<ProvisionalTypes> MissionPrio { get; set; } = new()
     {
         ProvisionalTypes.ProvisionalWeather,
         ProvisionalTypes.ProvisionalSequential,
         ProvisionalTypes.ProvisionalTimed
     };
-    public List<MissionTypes> MissionTypePrio { get; set; } = new()
-    {
-        MissionTypes.DroneSearch,
-        MissionTypes.RedAlert,
-        MissionTypes.Provisional,
-        MissionTypes.Standard,
-    };
+    public bool GrindAllProvisionals { get; set; } = true;
     public List<uint> JobPrio { get; set; } = new()
     {
         8, 9, 10, 11, 12, 13, 14, 15,  // Crafters: CRP, BSM, ARM, GSM, LTW, WVR, ALC, CUL
@@ -44,11 +40,9 @@ public partial class Config
     public bool Artisan_RaphaelForce { get; set; } = true;
     public bool Artisan_RaphaelMaster { get; set; } = false;
     public Dictionary<uint, uint> ScoreKeeper { get; set; } = new();
+
     public Dictionary<uint, MissionSettings> MissionConfig { get; set; } = new();
     public Dictionary<string, List<uint>> Mission_Playlist { get; set; } = new();
-
-    public bool GrindAllProvisionals { get; set; } = true;
-    public bool GrindOffClassRedAlert { get; set; } = false;
 
     public class MissionSettings
     {
