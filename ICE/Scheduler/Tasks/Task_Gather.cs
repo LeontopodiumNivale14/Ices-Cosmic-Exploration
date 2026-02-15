@@ -473,11 +473,17 @@ namespace ICE.Scheduler.Tasks
                 }
             }
 
+            if (PlayerHelper.HasStatusId(4437) && (currentDur == 1 || currentDur == maxDur - 4) && PlayerHelper.GetGp() != PlayerHelper.MaxGp())
+            {
+                ActionManager.Instance()->UseAction(ActionType.GeneralAction, 27);
+                return true;
+            }
+
             // general logic for checking for the rest of the buffs now
             foreach (var buff in Mission_Settings.SkillUseAmount)
             {
                 string action = buff.Key;
-                if (CanUseGatheringAction(action, profileId, missingDur, maxDur, boonChance))
+                if (CanUseGatheringAction(action, profileId, missingDur, maxDur, currentDur, boonChance))
                 {
                     var actionInfo = GatheringUtil.GathActionDict[action];
                     if (EzThrottler.Throttle($"Using Gathering Action: {action}"))
@@ -494,15 +500,9 @@ namespace ICE.Scheduler.Tasks
                 }
             }
 
-            if (PlayerHelper.HasStatusId(4437) && currentDur <= 2)
-            {
-                ActionManager.Instance()->UseAction(ActionType.GeneralAction, 27);
-                return true;
-            }
-
             return false;
         }
-        public static bool CanUseGatheringAction(string actionName, int profileId, bool missingDur, int maxDur, int? boonChance = null)
+        public static bool CanUseGatheringAction(string actionName, int profileId, bool missingDur, int maxDur, int currentDur, int? boonChance = null)
         {
             var actionInfo = GatheringUtil.GathActionDict[actionName];
             bool hasStatus = PlayerHelper.HasStatusId(actionInfo.StatusId);
@@ -512,7 +512,7 @@ namespace ICE.Scheduler.Tasks
 
             if (actionName == "BonusIntegrityChance")
             {
-                return hasStatus && missingDur;
+                return hasStatus && currentDur == 1;
             }
 
             var gatherBuff = C.GatherProfiles[profileId].GatherBuffs.Buffs[actionName];
@@ -559,7 +559,7 @@ namespace ICE.Scheduler.Tasks
                          && (gatherBuff.MaxUse == -1 || gatherBuff.MaxUse > used)
                          && properLvl,
                 "BonusIntegrity" => gatherBuff.Enabled
-                                    && missingDur
+                                    && currentDur == 1
                                     && hasGp
                                     && PlayerHelper.GetGp() >= gatherBuff.MinGp
                                     && (gatherBuff.MaxUse == -1 || gatherBuff.MaxUse > used)

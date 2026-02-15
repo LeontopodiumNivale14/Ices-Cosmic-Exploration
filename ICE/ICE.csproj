@@ -2,7 +2,7 @@
 <Project Sdk="Dalamud.NET.Sdk/14.0">
 
 	<PropertyGroup>
-		<Version>0.0.75.12</Version>
+		<Version>0.0.75.13</Version>
 		<Description>Who said we couldn't explore the moon!.</Description>
 		<PackageProjectUrl>https://github.com/goatcorp/ICE</PackageProjectUrl>
 		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>

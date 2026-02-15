@@ -302,7 +302,7 @@ namespace ICE.Scheduler.Tasks
                                 bool missingDur = gather.CurrentIntegrity != gather.TotalIntegrity;
                                 int boonChance = gather.GatheredItems.FirstOrDefault().BoonChance;
 
-                                bool useBuff = Task_Gather.CanUseGatheringAction(key, configId, missingDur, boonChance);
+                                bool useBuff = Task_Gather.CanUseGatheringAction(key, configId, missingDur, gather.TotalIntegrity, gather.CurrentIntegrity, boonChance);
                                 if (EzThrottler.Throttle($"Checking buff: {key}"))
                                 {
                                     IceLogging.Debug($"Action name: {key} | Using? {useBuff}");
