@@ -136,13 +136,13 @@ public static partial class CosmicHelper
     {
         RawLocation = new Vector3(410.29f, 18.90f, 25.14f),
         MapInfo = new Vector2(29.6f, 22.2f),
-        NpcSelection = 0,
+        NpcSelection = 1,
     };
     private static CriticalInfo AnnealingWinds2β = new()
     {
         RawLocation = new Vector3(10.10f, 7.98f, 339.70f),
         MapInfo = new Vector2(21.7f, 28.3f),
-        NpcSelection = 1,
+        NpcSelection = 0,
     };
 
     private static CriticalInfo GlassRain1α = new()
