@@ -532,21 +532,21 @@ namespace ICE.Scheduler.Tasks
             },
             [CosmicMoonRegistry.Auxesia.TerritoryId] = new()
             {
-                new()
+                new() // The Timberlodge (hub)
                 {
                     MapSelector = 0,
                     AethernetId = 2015422,
                     Location = new(259.8f, 205.64f, 356.3f),
                     LandZone = new(260.9f, 205.6f, 355.6f)
                 },
-                new()
+                new() // Full Bloom Gardens
                 {
                     MapSelector = 1,
                     AethernetId = 2015423,
                     Location = new(-226.37f, 145.01f, -560.4f),
                     LandZone = new(-226.0f, 145.0f, -559.3f)
                 },
-                new()
+                new() // Pileus Pergola
                 {
                     MapSelector = 2,
                     AethernetId = 2015424,
@@ -723,7 +723,9 @@ namespace ICE.Scheduler.Tasks
                 }
             }
 
-            if (distance > 0)
+            // Both legs must be pathable — a null leg would otherwise make this route look artificially short
+            // (same guard as CalculateHubAethernet).
+            if (distance > 0 && aethernet.pathTo != null && aethernet.pathFrom != null)
             {
                 aethernet.distance = distance;
                 aethernet.Aethernet_TravelTo = closestAetheryte.AethernetId;

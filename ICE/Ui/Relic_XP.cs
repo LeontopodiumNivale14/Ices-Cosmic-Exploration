@@ -77,6 +77,8 @@ using System.Collections.Generic;namespace ICE.Ui
                     xpType = "V";
                 else if (type.Key == 6)
                     xpType = "VI";
+                else if (type.Key == 7)
+                    xpType = "VII";
                 else
                     xpType = "???";
 

@@ -5,7 +5,7 @@ namespace ICE.Ui.DebugWindowTabs
 {
     internal class Ui_RelicInfo
     {
-        public static List<string> XPtypes = ["I", "II", "III", "IV", "V", "VI"];
+        public static List<string> XPtypes = ["I", "II", "III", "IV", "V", "VI", "VII"];
         public static List<(string Name, uint Id)> jobOptions = new()
         {
             ("CRP", 8),
