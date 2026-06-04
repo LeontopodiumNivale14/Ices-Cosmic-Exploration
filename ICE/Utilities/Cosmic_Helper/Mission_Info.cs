@@ -23,7 +23,7 @@ public static partial class CosmicHelper
                 if (manager == null)
                     return 0; // or some default value
 
-                return manager->State.CurrentMission.MissionUnitRowId;
+                return manager->CurrentMissionUnitRowId;
             }
             catch (AccessViolationException)
             {
@@ -37,7 +37,7 @@ public static partial class CosmicHelper
             }
         }
     }
-    public static unsafe uint? CurrentBait => WKSManager.Instance()->State.FishingBait;
+    public static unsafe uint? CurrentBait => WKSManager.Instance()->FishingBait;
     // public static unsafe uint CurrentLunarDevelopment => ExcelHelper.DevGrade.GetRow(WKSManager.Instance()->DevGrade).Unknown6;
     public static unsafe uint CurrentLunarDevelopment = 0;
 
@@ -143,7 +143,7 @@ public static partial class CosmicHelper
             byte toolClassId = (byte)(jobId - 7);
             byte arrayIndex = (byte)(toolClassId - 1);
 
-            var score = wks->State.Scores[arrayIndex];
+            var score = wks->Scores[arrayIndex];
             var currentStage = researchModule->CurrentStages[arrayIndex];
             // Cap next stage by current hub (Auxesia allows higher than old flat 17).
             var maxStage = CosmicMoonRegistry.GetMaxRelicStage((uint)Svc.ClientState.TerritoryType);

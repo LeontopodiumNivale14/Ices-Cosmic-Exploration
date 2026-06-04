@@ -3,7 +3,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using ICE.Utilities.Cosmic_Helper;
 using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
-using MissionRank = FFXIVClientStructs.FFXIV.Client.Game.WKS.WKSMissionModule.MissionRank;
+using MissionRank = FFXIVClientStructs.FFXIV.Client.Game.WKS.WKSManager.MissionRank;
 
 namespace ICE.Scheduler.Tasks
 {
@@ -58,14 +58,6 @@ namespace ICE.Scheduler.Tasks
                 if (CosmicHelper.SheetMissionDict.TryGetValue(currentMission, out var sheetInfo))
                 {
                     var rank = CurrentRank();
-
-                    if (rank == MissionRank.Failed)
-                    {
-                        IceLogging.Debug("Mission is either timed out, or out of resources. So going to force a turnin", tag);
-                        SchedulerMain.State = IceState.AbandonMission;
-                        P.TaskManager.Tasks.Clear();
-                        return true;
-                    }
 
                     IceLogging.Verbose("Mission info was valid, searching what we should be checking for", tag);
 
@@ -204,14 +196,6 @@ namespace ICE.Scheduler.Tasks
             var currentScore = CurrentScore();
             var rank = CurrentRank();
 
-            if (rank == MissionRank.Failed)
-            {
-                IceLogging.Debug("Mission is either timed out, or out of resources. So going to force a turnin", tag);
-                SchedulerMain.State = IceState.AbandonMission;
-                P.TaskManager.Tasks.Clear();
-                return true;
-            }
-
             if (Svc.Condition[ConditionFlag.ExecutingGatheringAction])
             {
                 return false;
@@ -316,14 +300,6 @@ namespace ICE.Scheduler.Tasks
 
             var currentScore = CurrentScore();
             var rank = CurrentRank();
-
-            if (rank == MissionRank.Failed)
-            {
-                IceLogging.Debug("Mission is either timed out, or out of resources. So going to force a turnin", tag);
-                SchedulerMain.State = IceState.AbandonMission;
-                P.TaskManager.Tasks.Clear();
-                return true;
-            }
 
             if (GenericHelpers.TryGetAddonMaster<WKSMissionInfomation>("WKSMissionInfomation", out var missionInfo) && missionInfo.IsAddonReady)
             {
@@ -444,12 +420,6 @@ namespace ICE.Scheduler.Tasks
                     P.TaskManager.Tasks.Clear();
                     return true;
                 }
-                else if (rank == MissionRank.Failed)
-                {
-                    SchedulerMain.State = IceState.AbandonMission;
-                    P.TaskManager.Tasks.Clear();
-                    return true;
-                }
 
                 var config = C.MissionConfig[Id];
                 bool shouldTurnin = (config.TurninGoal is TurninState.Gold && rank >= MissionRank.Gold) ||
@@ -488,28 +458,26 @@ namespace ICE.Scheduler.Tasks
             var managerPtr = WKSManager.Instance();
             if (managerPtr == null) return 0;
 
-            return managerPtr->State.CurrentMission.CollectedTotal;
+            return managerPtr->CollectedTotal;
         }
         private static unsafe uint CurrentIndividualTotal()
         {
             var managerPtr = WKSManager.Instance();
             if (managerPtr == null) return 0;
-
-            return managerPtr->State.CurrentMission.CollectedIndividual;
+            return managerPtr->CollectedIndividual;
         }
         private static unsafe uint CurrentScore()
         {
             var managerPtr = WKSManager.Instance();
             if (managerPtr == null) return 0;
-
-            return managerPtr->State.CurrentMission.Score;
+            return managerPtr->CurrentScore;
         }
         public static unsafe MissionRank CurrentRank()
         {
             var managerPtr = WKSManager.Instance();
             if (managerPtr == null) return MissionRank.None;
 
-            return managerPtr->State.CurrentMission.Rank;
+            return managerPtr->CurrentRank;
         }
     }
 }

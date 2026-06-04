@@ -9,7 +9,7 @@ using ICE.Utilities.GatheringHelper;
 using System.Collections.Generic;
 using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
 using static ICE.ConfigFiles.Config;
-using MissionRank = FFXIVClientStructs.FFXIV.Client.Game.WKS.WKSMissionModule.MissionRank;
+using MissionRank = FFXIVClientStructs.FFXIV.Client.Game.WKS.WKSManager.MissionRank;
 
 namespace ICE.Scheduler.Tasks
 {
@@ -418,14 +418,7 @@ namespace ICE.Scheduler.Tasks
                 var rank = Task_CheckScore.CurrentRank();
 
 
-                if (rank == MissionRank.Failed)
-                {
-                    IceLogging.Info($"We've managed to time out the mission. Going to attempt to turnin, and abandon if not", "[Gathering: Open Gathering Menu]");
-                    SchedulerMain.State = IceState.AbandonMission;
-                    P.TaskManager.Tasks.Clear();
-                    return true;
-                }
-                else if (Svc.Condition[ConditionFlag.Gathering] && GenericHelpers.TryGetAddonMaster<Gathering>("Gathering", out var gather) && gather.IsAddonReady || GenericHelpers.TryGetAddonMaster<GatheringMasterpiece>("GatheringMasterpiece", out var collectable) && collectable.IsAddonReady)
+                if (Svc.Condition[ConditionFlag.Gathering] && GenericHelpers.TryGetAddonMaster<Gathering>("Gathering", out var gather) && gather.IsAddonReady || GenericHelpers.TryGetAddonMaster<GatheringMasterpiece>("GatheringMasterpiece", out var collectable) && collectable.IsAddonReady)
                 {
                     IceLogging.Info($"Gathering window is now visible, continuing onto GatheringInteraction Task", "[Gathering: OpenGatheringMenu]");
                     P.TaskManager.Insert(() => GatherInteractV2(), "Gathering at the node", Utils.TaskConfig);

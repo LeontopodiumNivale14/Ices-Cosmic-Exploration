@@ -214,7 +214,7 @@ using System.Collections.Generic;namespace ICE.Ui
             foreach (var crafterJob in CosmicHelper.CrafterJobList)
             {
                 uint classScore = 0;
-                var score = wksManager->State.Scores;
+                var score = wksManager->Scores;
                 int jobId = (int)crafterJob;
                 classScore = (uint)score[jobId-8];
                 classScore = Math.Min(500_000, classScore);
@@ -227,7 +227,7 @@ using System.Collections.Generic;namespace ICE.Ui
             foreach (var gatherJob in CosmicHelper.GatheringJobList)
             {
                 uint classScore = 0;
-                var score = wksManager->State.Scores;
+                var score = wksManager->Scores;
                 int jobId = (int)gatherJob;
                 classScore = (uint)score[jobId-8];
                 classScore = Math.Min(500_000, classScore);

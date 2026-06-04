@@ -1,7 +1,7 @@
 ﻿using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using ICE.Utilities.Cosmic_Helper;
-using MissionRank = FFXIVClientStructs.FFXIV.Client.Game.WKS.WKSMissionModule.MissionRank;
+using MissionRank = FFXIVClientStructs.FFXIV.Client.Game.WKS.WKSManager.MissionRank;
 
 namespace ICE.Scheduler.Tasks
 {
@@ -63,8 +63,7 @@ namespace ICE.Scheduler.Tasks
                 var rank = Task_CheckScore.CurrentRank();
                 if (rank > MissionRank.None)
                 {
-                    if (rank != MissionRank.Failed)
-                    {
+                   
                         Mission_Settings.TurninState = rank switch
                         {
                             MissionRank.Gold => TurninState.Gold,
@@ -72,7 +71,6 @@ namespace ICE.Scheduler.Tasks
                             MissionRank.Bronze => TurninState.Bronze,
                             _ => TurninState.Bronze,
                         };
-                    }
                         
 
                     IceLogging.Debug("Reporting the mission", tag);

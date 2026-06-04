@@ -122,7 +122,7 @@ namespace ICE.Ui.DebugWindowTabs
                     if (wks == null)
                         return;
 
-                    var scores = wks->State.Scores;
+                    var scores = wks->Scores;
 
                     ImGui.TableNextRow();
                     ImGui.TableSetColumnIndex(0);
@@ -164,7 +164,7 @@ namespace ICE.Ui.DebugWindowTabs
             var managerPtr = WKSManager.Instance();
             if (managerPtr == null) return 0;
 
-            return managerPtr->State.CurrentMission.Score;
+            return managerPtr->CurrentScore;
         }
     }
 }

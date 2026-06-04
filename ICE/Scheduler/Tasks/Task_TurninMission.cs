@@ -6,7 +6,7 @@ using ICE.Utilities.Cosmic_Helper;
 using ICE.Utilities.GatheringHelper;
 using System.Collections.Generic;
 using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
-using MissionRank = FFXIVClientStructs.FFXIV.Client.Game.WKS.WKSMissionModule.MissionRank;
+using MissionRank = FFXIVClientStructs.FFXIV.Client.Game.WKS.WKSManager.MissionRank;
 
 namespace ICE.Scheduler.Tasks
 {
@@ -408,7 +408,7 @@ namespace ICE.Scheduler.Tasks
             if (wksManager == null || wksManager->ResearchModule == null || !wksManager->ResearchModule->IsLoaded)
                 return 0;
 
-            var scores = wksManager->State.Scores;
+            var scores = wksManager->Scores;
             return scores[(int)(uint)Player.Job - 8];
         }
 

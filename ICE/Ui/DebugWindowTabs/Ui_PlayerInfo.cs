@@ -54,7 +54,7 @@ namespace ICE.Ui.DebugWindowTabs
             if (PlayerHelper.IsInCosmicZone())
             {
                 var manager = WKSManager.Instance();
-                var currentMission = manager->State.CurrentMission.MissionUnitRowId;
+                var currentMission = manager->CurrentMissionUnitRowId;
 
                 ImGui.Text($"Current Mission: {currentMission}");
             }
@@ -294,7 +294,7 @@ namespace ICE.Ui.DebugWindowTabs
             if (wks == null)
                 return 0;
 
-            return wks->State.DevGrade;
+            return wks->DevGrade;
         }
     }
 }
