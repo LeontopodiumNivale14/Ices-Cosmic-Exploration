@@ -102,6 +102,7 @@ namespace ICE.Scheduler.Tasks
                     PlaylistOptions.DronebitAmount => dronebitAmount >= entry.DronebitAmount,
                     PlaylistOptions.ClassLevel => level >= entry.ClassLevel,
                     PlaylistOptions.ClassScore => classScore >= entry.ClassScore,
+                    PlaylistOptions.MasteryScore => relicInfo.Mastery >= entry.ClassScore
                 };
 
                 if (!achieved)

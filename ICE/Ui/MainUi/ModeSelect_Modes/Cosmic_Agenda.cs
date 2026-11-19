@@ -25,6 +25,7 @@ namespace ICE.Ui.MainUi.ModeSelect_Modes
             order.AddRange(CosmicMoonRegistry.MaxRelicPlaylistOptions);
             order.Add(PlaylistOptions.ToolMaxExp);
             order.Add(PlaylistOptions.MasteryScore);
+            order.Add(PlaylistOptions.ClassScore);
             order.Add(PlaylistOptions.SelectedRelicLv);
             order.Add(PlaylistOptions.CreditAmount);
             order.Add(PlaylistOptions.PlanetAmount);
