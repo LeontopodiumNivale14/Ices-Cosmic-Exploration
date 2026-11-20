@@ -1,4 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using ICE.Utilities.Cosmic_Helper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ public class QuestCheck
 {
     public static bool CollectablesUnlocked()
     {
-        ushort collectableMission = 2095;
+        ushort collectableMission = 2095; // Inscrutable Tastes
         return QuestCompleted(collectableMission);
     }
 

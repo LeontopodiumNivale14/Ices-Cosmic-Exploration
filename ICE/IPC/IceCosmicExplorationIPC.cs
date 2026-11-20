@@ -15,6 +15,30 @@ public class IceCosmicExplorationIPC
         EzIPC.Init(this);
     }
 
+    /// <summary>
+    /// Fires whenever a mission is completed.
+    /// </summary>
+    [EzIPCEvent("MissionCompleted")] public Action MissionCompleted = null!;
+
+    // Function to fire off whenever I complete the mission
+    public void NotifyMissionCompleted()
+    {
+        if (MissionCompleted == null)
+        {
+            IceLogging.Error("MissionCompleted IPC event was not initialized by EzIPC.Init");
+            return;
+        }
+
+        try
+        {
+            MissionCompleted.Invoke();
+        }
+        catch (Exception ex)
+        {
+            IceLogging.Error($"A subscriber threw on MissionCompleted: {ex.Message}");
+        }
+    }
+
 
     [EzIPC] public bool IsRunning()
     {

@@ -65,7 +65,6 @@ namespace ICE.Scheduler.Tasks
                         if (EzThrottler.Throttle("Timed out message"))
                             IceLogging.Debug("Mission is either timed out, or out of resources. So going to force a turnin", tag);
                         SchedulerMain.State = IceState.AbandonMission;
-                        P.AutoHook.Ah_State(false);
                         P.TaskManager.Tasks.Clear();
                         return true;
                     }
@@ -148,7 +147,7 @@ namespace ICE.Scheduler.Tasks
                             {
                                 IceLogging.Info("The threshold for scoring was met. Time to turnin", tag);
                                 SchedulerMain.State = IceState.TurninMission;
-                                P.AutoHook.Ah_State(false);
+                                // P.AutoHook.Ah_State(false);
                                 P.TaskManager.Tasks.Clear();
 
                                 return true;

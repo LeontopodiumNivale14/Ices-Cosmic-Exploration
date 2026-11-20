@@ -17,6 +17,8 @@ namespace ICE.Scheduler.Tasks
         private static int PreviousScore = 0;
         private static bool HasInteracted = false;
         private static int TickRate = 0;
+        private static DateTime? eventFiredAt = null;
+        private const int EventGraceMs = 1000;
 
         public static void Enqueue()
         {
@@ -25,6 +27,7 @@ namespace ICE.Scheduler.Tasks
                     new(() => CheckRedAlert(), "Checking for Red Alert Info"),
                     new(() => Mission_TurninV2(), "Turning in the mission to the moon gods", Utils.TaskConfig),
                     new(() => GoldCheck(), "Checking if Gold Check Task needs to be completed"),
+                    new(() => PostEventCheck(), "Allowing plugins a grace period to work off our event"),
                     new(() => CommandCheck(), "Checking for post mission commands"),
                     new(() => JobSwapCheck(), "Checking for necessary job swap")
                 );
@@ -130,6 +133,7 @@ namespace ICE.Scheduler.Tasks
                 Mission_Settings.TurninState = TurninState.None;
 
                 CosmicHelper.Task_UpdateRelicMissionInfo();
+                eventFiredAt = null;
 
                 if (Mission_Settings.StopAfterCurrent)
                 {
@@ -350,6 +354,24 @@ namespace ICE.Scheduler.Tasks
                 SchedulerMain.State = IceState.Start;
             }
 
+            return true;
+        }
+        public static bool PostEventCheck()
+        {
+            // First call: fire the event and start the grace timer
+            if (eventFiredAt == null)
+            {
+                eventFiredAt = DateTime.UtcNow;
+                P.IceIpc.NotifyMissionCompleted();
+                return false;
+            }
+
+            // Still inside the grace period
+            if ((DateTime.UtcNow - eventFiredAt.Value).TotalMilliseconds < EventGraceMs)
+                return false;
+
+            // Done: reset so the next mission fires again
+            eventFiredAt = null;
             return true;
         }
         public static unsafe bool? CommandCheck()

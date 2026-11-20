@@ -47,7 +47,6 @@ namespace ICE.IPC
         public void Ah_State(bool state)
         {
             bool stateEnabled = GetPluginState();
-            bool autoStartEnabled = GetAutoStartFishing();
 
             if (EzThrottler.Throttle("Applying autohook states"))
             {

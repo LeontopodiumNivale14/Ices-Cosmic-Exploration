@@ -5,7 +5,6 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ICE.Ui.Debug_Tabs.Debug_Ui;
 using ICE.Utilities.Cosmic_Helper;
 using ICE.Utilities.GatheringHelper;
-using TerraFX.Interop.Windows;
 using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
 using static ICE.Utilities.GatheringHelper.GatheringUtil;
 
@@ -101,7 +100,6 @@ namespace ICE.Scheduler.Tasks
                     IceLogging.Info("We are reporting to be out of bait, proceeding to abandon/turnin mission");
                     SchedulerMain.State = IceState.AbandonMission;
                     SafetyThrottle = 0;
-                    P.AutoHook.Ah_State(false);
                     return true;
                 }
 
@@ -125,28 +123,8 @@ namespace ICE.Scheduler.Tasks
                     _fishingDebug = new FishingDebug();
                 }
 
-                if (_fishingDebug.IsFishable())
+                if (_fishingDebug.IsFishable() && !Svc.Condition[ConditionFlag.Gathering])
                 {
-                    var currentSpot = GetCurrentFishingSpot();
-                    if (EzThrottler.Throttle("Fishable Location message"))
-                    {
-                        if (currentSpot != null)
-                        {
-                            IceLogging.Verbose("We were told we're in a fishable location, so going to report back we are suppose to be able to fish\n" +
-                                               $"Current spot: {currentSpot.FishingSpot:N2}", handle);
-                        }
-                        else
-                        {
-                            IceLogging.Verbose($"We are currently in a fishable spot... but the data isn't loaded correctly? MissionID: {CosmicHelper.CurrentLunarMission}", handle);
-                        }
-                    }
-
-                    if (EzThrottler.Throttle("Start Fishing: AH", 500))
-                    {
-                        IceLogging.Verbose("We are telling autohook to start fishing via IPC...", handle);
-                        P.AutoHook.Ah_State(true);
-                    }
-
                     if (EzThrottler.Throttle("Started Fishing Throttle", 500))
                     {
                         IceLogging.Verbose($"+1 to waiting for fishing to actually start [Might be waiting on gp/buffs]... {StartedFishing}", handle);
